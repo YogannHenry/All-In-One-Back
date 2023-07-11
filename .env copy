@@ -1,0 +1,4 @@
+PORT=3000
+DB_USER= allInOne
+DB_PASSWORD=aio
+DB_DATABASE=allInOne
