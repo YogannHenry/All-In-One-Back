@@ -1,6 +1,6 @@
 BEGIN;
 
-DROP TABLE IF EXISTS "wallet", "document"
+DROP TABLE IF EXISTS "wallet", "document";
 
 CREATE TABLE "wallet" (
   "id" int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -9,7 +9,7 @@ CREATE TABLE "wallet" (
   "userId" int NOT NULL REFERENCES "user"("id"),
   "created_at" timestamptz NOT NULL DEFAULT now(),
   "updated_at" timestamptz
-  )
+  );
 
 
 CREATE TABLE "document" (
@@ -18,10 +18,10 @@ CREATE TABLE "document" (
   "information" text,
   "file" text,
   "icon" text,
-  "document",
+  "document" text,
   "listId" int NOT NULL REFERENCES "list"("id"),
   "created_at" timestamptz NOT NULL DEFAULT now(),
   "updated_at" timestamptz
-  )
+  );
 
 COMMIT;

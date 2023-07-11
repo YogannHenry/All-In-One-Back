@@ -1,6 +1,6 @@
 BEGIN;
 
-DROP TABLE IF EXISTS "list", "task"
+DROP TABLE IF EXISTS "list", "task";
 
 CREATE TABLE "list" (
   "id" int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -9,7 +9,7 @@ CREATE TABLE "list" (
   "userId" int NOT NULL REFERENCES "user"("id"),
   "created_at" timestamptz NOT NULL DEFAULT now(),
   "updated_at" timestamptz
-  )
+  );
 
 
 CREATE TABLE "task" (
@@ -19,6 +19,6 @@ CREATE TABLE "task" (
   "listId" int NOT NULL REFERENCES "list"("id"),
   "created_at" timestamptz NOT NULL DEFAULT now(),
   "updated_at" timestamptz
-  )
+  );
 
 COMMIT;
