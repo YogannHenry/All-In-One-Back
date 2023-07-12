@@ -6,8 +6,8 @@ const toDoListRouter = require('./app.to-do-list/to-do-list.router/to-do-list.ro
 const app = express() ;
 const port = process.env.PORT ?? 1665;
 
+app.use(express.json());
 app.use(toDoListRouter);
-// //app.use(express.json());
 // app.use(walletRouter);
 
 console.log("coucou")

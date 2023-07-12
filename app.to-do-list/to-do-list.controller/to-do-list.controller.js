@@ -21,6 +21,7 @@ const listController = {
         res.status(500).json(error);
       }
     },
+
     createOneList: async (req, res) => {
       try {
         const {name, position, userId} = req.body;
@@ -31,17 +32,20 @@ const listController = {
         res.status(500).json(error);
       }
     },
+
     deleteOneList: async (req, res) => {
       try {
         const listId = req.params.listId;
-        const taskByListId = await taskDatamapper.deleteTaskByList(listId);
+        const taskByListId = await taskDatamapper.deleteTaskByListId(listId);
         const oneList = await listDatamapper.deleteOneList(listId);
         res.json(oneList);
 
       } catch (error) {
         res.status(500).json(error)
       }
-    }, modifyOneList: async (req,res) => {
+    },
+    
+    modifyOneList: async (req,res) => {
       try {
         const listId = req.params.listId;
         const {name, position} = req.body;

@@ -19,7 +19,7 @@ const listDatamapper = {
     return result.rows;
   },
   async deleteOneList(listId) {
-    const query = 'DELETE FROM post WHERE id = $1';
+    const query = 'DELETE FROM "list" WHERE id = $1';
     const result = await pool.query(query, [listId]);
     return result.rows;
   },
@@ -35,38 +35,6 @@ const listDatamapper = {
     
   }
 
-
-
 }
 
 module.exports = listDatamapper
-
-
-async findByPk(categoryId) {
-  const result = await client.query('SELECT * FROM category WHERE id = $1', [categoryId]);
-
-  if (result.rowCount === 0) {
-      return undefined;
-  }
-
-  return result.rows[0];
-},
-
-getOneCard: async (req, res) => {
-  try {
-    const cardId = req.params.id;
-    const card = await Card.findByPk(cardId, {
-      include: 'tags',
-      order: [
-        ['position', 'ASC']
-      ]
-    });
-    if (!card) {
-      res.status(404).json('Cant find card with id ' + cardId);
-    } else {
-      res.json(card);
-    }
-  } catch (error) {
-    res.status(500).json(error);
-  }
-},
