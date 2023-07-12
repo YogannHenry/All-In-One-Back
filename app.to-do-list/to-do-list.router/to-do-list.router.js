@@ -7,9 +7,10 @@ const router = express.Router();
 // Routes recuperation liste
 
 router.get('/api/list', listController.getAllList)
-// router.post('/api/list', listController.createOneList)
-// router.put('/api/list/:listId', listController.modifyOneList)
-// router.delete('/api/list/:listId', listController.deleteOneList)
+router.get('/api/list/:listId', listController.getOneList)
+router.post('/api/list', listController.createOneList)
+router.put('/api/list/:listId', listController.modifyOneList)
+router.delete('/api/list/:listId', listController.deleteOneList)
 
 
 // // Routes recuperation taches
