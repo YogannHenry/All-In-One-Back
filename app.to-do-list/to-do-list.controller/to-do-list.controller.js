@@ -21,6 +21,7 @@ const listController = {
         res.status(500).json(error);
       }
     },
+
     createOneList: async (req, res) => {
       try {
         const {name, position, userId} = req.body;
@@ -32,17 +33,24 @@ const listController = {
         res.status(500).json(error);
       }
     },
+
     deleteOneList: async (req, res) => {
       try {
         const listId = req.params.listId;
+<<<<<<< HEAD
         // const taskByListId = await taskDatamapper.deleteTaskByListId(listId);
+=======
+        const taskByListId = await taskDatamapper.deleteTaskByListId(listId);
+>>>>>>> 2575f191ea35c6aefd042ebd11a874b5f0fa68db
         const oneList = await listDatamapper.deleteOneList(listId);
         res.json("message: liste supprimée avec succès");
 
       } catch (error) {
         res.status(500).json(error)
       }
-    }, modifyOneList: async (req,res) => {
+    },
+    
+    modifyOneList: async (req,res) => {
       try {
         const listId = req.params.listId;
         const {name, position} = req.body;
