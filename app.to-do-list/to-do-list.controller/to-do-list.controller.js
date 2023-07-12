@@ -7,5 +7,6 @@ const listController = {
       res.json(allLists)
     },
   }
+  
 
 module.exports = listController
