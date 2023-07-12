@@ -17,7 +17,8 @@ router.delete('/api/list/:listId', listController.deleteOneList)
 
 // Routes recuperation taches
 
-router.get('/api/:listId/task', taskController.getAllTask)
+router.get('/api/list/:listId/task', taskController.getAllTask)
+router.get('/api/list/task/:taskId', taskController.getOneTask)
 router.post('/api/list/:listId/task', taskController.createOneTask)
 router.put('/api/list/task/:taskId', taskController.modifyOneTask)
 router.delete('/api/list/task/:taskId', taskController.deleteOneTask)

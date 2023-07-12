@@ -10,8 +10,6 @@ app.use(express.json());
 app.use(toDoListRouter);
 // app.use(walletRouter);
 
-console.log("coucou")
-
 app.listen(port, () => {
   console.log(`Example app listening on port http://localhost:${port}`);
 });
