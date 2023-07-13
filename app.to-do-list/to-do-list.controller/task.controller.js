@@ -14,7 +14,7 @@ const TaskController = {
     getOneTask: async (req, res) => {
       try {
         const taskId = req.params.taskId;
-        const oneTask = await taskDatamapper.getOnetask(taskId);
+        const oneTask = await taskDatamapper.getOneTask(taskId);
          res.json(oneTask);
          
       } catch (error) {
@@ -27,7 +27,7 @@ const TaskController = {
         const listId = req.params.listId;
         const {description, position} = req.body;
         const oneTask = await taskDatamapper.createOneTask(description, position, listId);
-        res.json(oneTask);
+        res.json("message: tache créée avec succès");
          
       } catch (error) {
         res.status(500).json(error);
@@ -38,7 +38,7 @@ const TaskController = {
       try {
         const taskId = req.params.taskId;
         const oneTask = await taskDatamapper.deleteOneTask(taskId);
-        res.json(oneTask);
+        res.json("message: tache supprimée avec succès");
 
       } catch (error) {
         res.status(500).json(error)
@@ -48,8 +48,8 @@ const TaskController = {
     modifyOneTask: async (req,res) => {
       try {
         const taskId = req.params.taskId;
-        const {description, position, listId} = req.body;
-        const updatedTask = await listDatamapper.modifyOneList (description, position, listId);
+        const {description, position} = req.body;
+        const updatedTask = await taskDatamapper.modifyOneTask(description, position, taskId);
         res.json(updatedTask);
         
       } catch (error) {

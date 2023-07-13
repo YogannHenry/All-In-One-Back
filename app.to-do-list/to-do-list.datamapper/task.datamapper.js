@@ -22,14 +22,14 @@ const taskDatamapper = {
     const result = await pool.query(query, [taskId]);
     return result.rows;
   },
-  async modifyOneList (description, position, listId) {
-    const query = ` UPDATE list SET
+  async modifyOneTask(description, position, taskId) {
+    const query = ` UPDATE task SET
                            description = $1,
                            position = $2,
-                           listId = $3,
+                           updated_at = now()
                     WHERE id = $3
                     RETURNING *`
-  const result = await pool.query(query, [description, position, listId]);
+  const result = await pool.query(query, [description, position, taskId]);
   return result.rows;
   }, 
   async deleteTaskByListId (listId) {
