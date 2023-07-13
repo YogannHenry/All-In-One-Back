@@ -16,17 +16,13 @@ const userController = {
             const exists = await User.findOne({
                 where: {email: email}
             });
-
             // envoie de mail de confirmation
-
             if(exists) {
                 return res.render('signup', {error: 'qqchose s\'est mal passé'});
             }
             const salt = await bcrypt.genSalt(10);
             const hash = await bcrypt.hash(password, salt);
-
             await userDatamapper.createUser()
-
             // envoie de mail de confirmation
             res.json('message: inscription réussie');
         } catch (error) {
