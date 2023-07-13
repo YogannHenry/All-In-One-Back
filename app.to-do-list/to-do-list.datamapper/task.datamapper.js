@@ -6,7 +6,6 @@ const taskDatamapper = {
     const result = await pool.query(query);
     return result.rows;
   },
-
   async getOneTask (taskId) {
     const query = 'SELECT * FROM "task" WHERE id = $1';
     const result = await pool.query(query, [taskId]);
@@ -32,7 +31,6 @@ const taskDatamapper = {
                     RETURNING *`
   const result = await pool.query(query, [description, position, listId]);
   return result.rows;
-    
   }, 
   async deleteTaskByListId (listId) {
     const query = 'DELETE FROM "task" WHERE listId = $1';

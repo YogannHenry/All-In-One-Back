@@ -37,11 +37,7 @@ const listController = {
     deleteOneList: async (req, res) => {
       try {
         const listId = req.params.listId;
-<<<<<<< HEAD
-        // const taskByListId = await taskDatamapper.deleteTaskByListId(listId);
-=======
         const taskByListId = await taskDatamapper.deleteTaskByListId(listId);
->>>>>>> 2575f191ea35c6aefd042ebd11a874b5f0fa68db
         const oneList = await listDatamapper.deleteOneList(listId);
         res.json("message: liste supprimée avec succès");
 

@@ -21,11 +21,7 @@ const listDatamapper = {
   },
 
   async deleteOneList(listId) {
-<<<<<<< HEAD
-    const query = 'DELETE FROM list WHERE id = $1';
-=======
     const query = 'DELETE FROM "list" WHERE id = $1';
->>>>>>> 2575f191ea35c6aefd042ebd11a874b5f0fa68db
     const result = await pool.query(query, [listId]);
     return result.rows;
   },
@@ -44,8 +40,4 @@ const listDatamapper = {
 
 }
 
-<<<<<<< HEAD
 module.exports = listDatamapper
-=======
-module.exports = listDatamapper
->>>>>>> 2575f191ea35c6aefd042ebd11a874b5f0fa68db

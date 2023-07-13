@@ -24,7 +24,8 @@ const TaskController = {
 
     createOneTask: async (req, res) => {
       try {
-        const {description, position, listId} = req.body;
+        const listId = req.params.listId;
+        const {description, position} = req.body;
         const oneTask = await taskDatamapper.createOneTask(description, position, listId);
         res.json(oneTask);
          
