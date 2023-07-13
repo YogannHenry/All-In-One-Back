@@ -49,7 +49,7 @@ const TaskController = {
       try {
         const taskId = req.params.taskId;
         const {description, position} = req.body;
-        const updatedTask = await taskDatamapper.modifyOneTask (description, position, taskId);
+        const updatedTask = await taskDatamapper.modifyOneTask(description, position, taskId);
         res.json(updatedTask);
         
       } catch (error) {
