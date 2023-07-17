@@ -13,7 +13,7 @@ const taskDatamapper = {
   },
   async createOneTask (description, position, listId) {
     const query = `INSERT INTO "task"("description", "position", "listId") VALUES 
-                    ($1, $2, $3);`
+                    ($1, $2, $3);`;
     const result = await pool.query(query, [description, position, listId]);
     return result.rows;
   },
@@ -28,7 +28,7 @@ const taskDatamapper = {
                            position = $2,
                            updated_at = now()
                     WHERE id = $3
-                    RETURNING *`
+                    RETURNING *`;
   const result = await pool.query(query, [description, position, taskId]);
   return result.rows;
   }, 
