@@ -13,10 +13,7 @@
     "dotenv": "^16.3.1",
     "email-validator": "^2.0.4",
     "express": "^4.18.2",
-<<<<<<< HEAD
-=======
     "jsonwebtoken": "^9.0.1",
->>>>>>> ab5eb2bd0bf97ef8758755f59306e8556a705051
     "pg": "^8.11.1"
   }
 }

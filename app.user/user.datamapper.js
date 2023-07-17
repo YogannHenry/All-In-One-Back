@@ -1,10 +1,16 @@
-const pool = require("../../database.connexion.js")
+const pool = require("../database.connexion.js")
 
 const userDatamapper= {
     
   async getUserByEmail (email) {
     const query = `SELECT * FROM "user" WHERE email = $1`;
     const result = await pool.query(query, [email]);
+    return result.rows[0];
+  },
+
+  async getUserById (id) {
+    const query = `SELECT * FROM "user" WHERE id = $1`;
+    const result = await pool.query(query, [id]);
     return result.rows;
   },
   
@@ -21,15 +27,14 @@ const userDatamapper= {
     return result.rows;
   },
 
-  async modifyOneUser (pseudo, email, password) {
-    const query = ` UPDATE list SET
+  async modifyOneUser (pseudo, email, password, userId) {
+    const query = ` UPDATE "user" SET
                            pseudo = $1,
                            email = $2,
                            password = $3
-                           updated_at = now()
                     WHERE id = $4
                     RETURNING *`
-  const result = await pool.query(query, [pseudo, email, password]);
+  const result = await pool.query(query, [pseudo, email, password, userId]);
   return result.rows;
     
   }

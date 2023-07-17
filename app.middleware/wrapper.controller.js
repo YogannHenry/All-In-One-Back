@@ -3,7 +3,7 @@ module.exports = (controller) => async (req, res, next) => {
       await controller(req, res, next);
     } catch (error) {
       console.log(error);
-      next(err);
+      next(error);
     }
   };
   

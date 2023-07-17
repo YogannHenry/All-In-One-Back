@@ -33,7 +33,7 @@ const taskDatamapper = {
   return result.rows;
   }, 
   async deleteTaskByListId (listId) {
-    const query = 'DELETE FROM "task" WHERE listId = $1';
+    const query = 'DELETE FROM "task" WHERE "listId" = $1';
     const result = await pool.query(query, [listId]);
     return result.rows;
   }

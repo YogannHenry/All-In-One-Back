@@ -1,5 +1,9 @@
-const userDatamapper = require("./user.datamapper.js")
-const jwt = require("jsonwebtoken")
+const userDatamapper = require("./user.datamapper.js");
+const listDatamapper = require("../app.to-do-list/to-do-list.datamapper/list.datamapper.js")
+const taskDatamapper = require("../app.to-do-list/to-do-list.datamapper/task.datamapper.js")
+const jwt = require("jsonwebtoken");
+const emailValidator = require("email-validator");
+const bcrypt = require("bcrypt")
 
 
 // ! middleware de vérification token:
@@ -17,8 +21,9 @@ const userController = {
             if(! emailValidator.validate(email)) {
                 return res.json('message: votre email n\'est pas valide');
             }
+            const exists = await userDatamapper.getUserByEmail(email)
             if(exists) {
-                return res.json('message qqchose s\'est mal passé');
+                return res.json('message: qqchose s\'est mal passé');
             }
             const salt = await bcrypt.genSalt(10);
             const passwordHash = await bcrypt.hash(password, salt);
@@ -28,12 +33,12 @@ const userController = {
     },
     async logIn (req, res){
             const {pseudo, email, password} = req.body
-            const user = await datamapper.getUserByEmail(email)
+            const user = await userDatamapper.getUserByEmail(email)
             if (!user) {
                 res.json("message: email ou mot de passe incorrect")
             } 
-
             const passwordIsValid = await bcrypt.compare(password, user.password);
+              
             if (!passwordIsValid) {
                 res.json("message: email ou mot de passe incorrect")
             }
@@ -52,24 +57,56 @@ const userController = {
             const now = new Date();
             const time = now.getTime();
             const expireAt = time + expiresIn
+            
+            res.data.token = token
+            res.data.expireAt = expireAt
 
-            res.data.token
-            res.data.expireAt
-    },
+            res.json("connexion réussie")       
+   },
     async logOut (req, res){
         // supprimer le token?? ca se fait du coté front je crois, donc en back, 
         // je crois qu'on a rien a faire, sauf peut-etre supprimer la signature ?
     },
     async deleteUser(req, res){
-            const listByUser = await listDatamapper.getListByUserId()
+            const userId = req.params.userId
+            const listByUser = await listDatamapper.getListByUserId(userId)
+            const listIdArray = []
             for (const listId of listByUser){
-                const deleteTask = await taskDatamapper.deleteTaskByListId(listId)
+                listIdArray.push(listId.id)
             }
+            for (const listId of listIdArray){
+                const deleteTask = await taskDatamapper.deleteTaskByListId(listId)
+                const deleteList = await listDatamapper.deleteOneList(listId)
+            }
+
             // ! supprimer le wallet + les documents
-            const deleteUser = await userDatamapper.deleteUser()
+            const deleteUser = await userDatamapper.deleteOneUser(userId)
+            res.json("message: l'utilisateur et toutes ses données ont été supprimées")
     },
     async modifyUser(req, res){
-            const {pseudo, email, password} = req.body
-            const modifyUser = await userDatamapper.modifyUser(pseudo, email, password)
+            const userId = req.params.userId
+            const {pseudo, email, password, passwordConfirm} = req.body
+
+            if(password !== passwordConfirm) {
+                return res.json('message: Les mots de passe ne correspondent pas');
+            }
+            if(! emailValidator.validate(email)) {
+                return res.json('message: votre email n\'est pas valide');
+            }
+            const exists = await userDatamapper.getUserByEmail(email)
+            if(exists) {
+                return res.json('message: qqchose s\'est mal passé');
+            }
+            const salt = await bcrypt.genSalt(10);
+            const passwordHash = await bcrypt.hash(password, salt);
+            const updatedUser = await userDatamapper.modifyOneUser(pseudo, email, passwordHash, userId)
+            res.json(updatedUser)
+    },
+    async getUserById (req, res){
+            const id = req.params.id
+            const user = await userDatamapper.getUserById(id)
+            res.json(user)
     }
 }
+
+module.exports = userController
