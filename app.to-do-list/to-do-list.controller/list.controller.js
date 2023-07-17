@@ -1,4 +1,4 @@
-const listDatamapper = require("../to-do-list.datamapper/to-do-list.datamapper.js");
+const listDatamapper = require("../to-do-list.datamapper/list.datamapper.js");
 
 const listController = {
   async getAllList (req, res) {

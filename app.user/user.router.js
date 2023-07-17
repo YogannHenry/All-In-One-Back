@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const wrapperController = require('../../app.middleware/wrapper.controller.js');
 
 // route pour l'inscription
 router.post('/api/user', wrapperController(userController.register))

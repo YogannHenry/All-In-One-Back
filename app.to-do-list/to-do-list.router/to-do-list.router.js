@@ -1,9 +1,9 @@
 const express = require('express');
 
-const listController = require('../to-do-list.controller/to-do-list.controller.js');
+const listController = require('../to-do-list.controller/list.controller.js');
 const taskController = require('../to-do-list.controller/task.controller.js');
 
-const wrapperController = require('../../app.wrapperController/wrapper.controller.js');
+const wrapperController = require('../../app.middleware/wrapper.controller.js');
 
 
 const router = express.Router();
