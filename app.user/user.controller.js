@@ -1,5 +1,6 @@
-const dbConnexion = require("../database.connexion.js")
 const userDatamapper = require("./user.datamapper.js")
+const jwt = require("jsonwebtoken")
+
 
 // ! middleware de vérification token:
     // récupérer le token dans headers: {Authorization: `bearer ${token}
@@ -7,7 +8,6 @@ const userDatamapper = require("./user.datamapper.js")
 
 const userController = {
     async register (req, res){
-        try {
             const { pseudo, email, password, passwordConfirm } = req.body;
             // ! enforcer ces règles avec des regex
             // ! les mots de passe doivent être minimum de 8 caractères de long et comporter des caractères spéciaux, et des chiffres
@@ -25,32 +25,51 @@ const userController = {
             await userDatamapper.createUser(pseudo, email, passwordHash)
             // ! envoie de mail de confirmation
             res.json('message: inscription réussie');
-        } catch (error) {
-            console.log(error);
-            res.status(500).json('message: erreur server');
-        }
-
     },
     async logIn (req, res){
-        // récupérer les info utilisateur du req.body
-        // vérifier si le user est présent en BDD avec l'email
-        // s'il es pas présent= erreur
-        // s'il est présent= générer un token d'authentification
-        // génération du token d'authentification de l'utilisateur
-            // Entete: présicer qu'il s'agit d'un jwt + donner l'agorithme de signature
-            // contenu: userId
-            // signature: clé secrete de vérification
-        // renvoyer le token dans response.data.token
-  },
+            const {pseudo, email, password} = req.body
+            const user = await datamapper.getUserByEmail(email)
+            if (!user) {
+                res.json("message: email ou mot de passe incorrect")
+            } 
+
+            const passwordIsValid = await bcrypt.compare(password, user.password);
+            if (!passwordIsValid) {
+                res.json("message: email ou mot de passe incorrect")
+            }
+
+            const expiresIn = parseInt(process.env.JSON_WEB_TOKEN_EXPIRES_IN_SECONDS, 10) ?? 300;
+            const token = jwt.sign(
+              {
+                id: user.id,
+                email: user.email,
+                pseudo: user.pseudo
+              },
+              process.env.JSON_WEB_TOKEN_PRIVATE_KEY,
+              { expiresIn },
+            );
+        
+            const now = new Date();
+            const time = now.getTime();
+            const expireAt = time + expiresIn
+
+            res.data.token
+            res.data.expireAt
+    },
     async logOut (req, res){
         // supprimer le token?? ca se fait du coté front je crois, donc en back, 
         // je crois qu'on a rien a faire, sauf peut-etre supprimer la signature ?
     },
     async deleteUser(req, res){
-        // supprimer le user en BDD + ses listes, ses voiture, ses wallets + les tables liées
+            const listByUser = await listDatamapper.getListByUserId()
+            for (const listId of listByUser){
+                const deleteTask = await taskDatamapper.deleteTaskByListId(listId)
+            }
+            // ! supprimer le wallet + les documents
+            const deleteUser = await userDatamapper.deleteUser()
     },
     async modifyUser(req, res){
-        // modifier les infos du user en BDD
+            const {pseudo, email, password} = req.body
+            const modifyUser = await userDatamapper.modifyUser(pseudo, email, password)
     }
-
 }

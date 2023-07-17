@@ -1,4 +1,4 @@
-const pool = require("../../database.connexion.js")
+const pool = require("../../database.connexion.js");
 
 const listDatamapper = {
   async getAllList (req, res) {
@@ -14,7 +14,7 @@ const listDatamapper = {
   },
   async createOneList (name, position, userId) {
     const query = `INSERT INTO "list"("name", "position", "userId") VALUES 
-                    ($1, $2, $3);`
+                    ($1, $2, $3)`;
     const result = await pool.query(query, [name, position, userId]);
     return result.rows;
   },
@@ -29,12 +29,16 @@ const listDatamapper = {
                            position = $2,
                            updated_at = now()
                     WHERE id = $3
-                    RETURNING *`
+                    RETURNING *`;
   const result = await pool.query(query, [name, position, listId]);
   return result.rows;
     
+  },
+  async getListByUserId(userId){
+    //! il faut retourner un tableau de listId
+    const query = `SELECT * FROM "list" WHERE userId = $1`;
+    const result = await pool.query(query, [userId]);
   }
-
 }
 
 module.exports = listDatamapper
