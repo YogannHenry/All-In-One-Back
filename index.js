@@ -7,7 +7,6 @@ const userRouter = require('./app.user/user.router.js')
 const app = express() ;
 const port = process.env.PORT ?? 1665;
 
-
 app.use(express.json());
 
 app.use(userRouter)

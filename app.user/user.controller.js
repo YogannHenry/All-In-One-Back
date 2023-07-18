@@ -6,10 +6,6 @@ const emailValidator = require("email-validator");
 const bcrypt = require("bcrypt")
 
 
-// ! middleware de vérification token:
-    // récupérer le token dans headers: {Authorization: `bearer ${token}
-    // le mettre pour toutes les routes qui ont besoin d'autorisation
-
 const userController = {
     async register (req, res){
             const { pseudo, email, password, passwordConfirm } = req.body;
@@ -58,9 +54,9 @@ const userController = {
             const time = now.getTime();
             const expireAt = time + expiresIn
             
-            res.data.token = token
-            res.data.expireAt = expireAt
-
+            res.token = token
+            res.expireAt = expireAt
+            console.log(res.token)
             res.json("connexion réussie")       
    },
     async logOut (req, res){
