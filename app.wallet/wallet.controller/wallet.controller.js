@@ -1,4 +1,4 @@
-const walletDatamapper = require("../wallet.datamapper/wallet.datamapper.js");
+const walletDatamapper = require ("../../app.wallet/wallet.datamapper/wallet.datamapper.js")
 
 const walletController = {
   async getAllWallet (req, res) {

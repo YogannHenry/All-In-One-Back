@@ -2,6 +2,7 @@ const pool = require("../../database.connexion.js");
 
 const walletDatamapper = {
   async getAllWallet (req, res) {
+    console.log("coucou2")
     const query = 'SELECT * FROM "wallet"';
     const result = await pool.query(query);
     return result.rows;
@@ -45,4 +46,4 @@ const walletDatamapper = {
   }
 }
 
-module.exports = wallet
+module.exports = walletDatamapper
