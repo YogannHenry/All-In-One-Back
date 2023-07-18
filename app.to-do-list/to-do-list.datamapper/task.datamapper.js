@@ -23,7 +23,7 @@ const taskDatamapper = {
     return result.rows;
   },
   async modifyOneTask(description, position, taskId) {
-    const query = ` UPDATE task SET
+    const query = ` UPDATE "task" SET
                            description = $1,
                            position = $2,
                            updated_at = now()

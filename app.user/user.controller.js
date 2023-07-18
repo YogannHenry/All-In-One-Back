@@ -1,6 +1,9 @@
 const userDatamapper = require("./user.datamapper.js");
 const listDatamapper = require("../app.to-do-list/to-do-list.datamapper/list.datamapper.js")
 const taskDatamapper = require("../app.to-do-list/to-do-list.datamapper/task.datamapper.js")
+const walletDatamapper = require("../app.wallet/wallet.datamapper/wallet.datamapper")
+const documentDatamapper = require("../app.wallet/wallet.datamapper/document.datamapper")
+
 const jwt = require("jsonwebtoken");
 const emailValidator = require("email-validator");
 const bcrypt = require("bcrypt")
@@ -75,7 +78,16 @@ const userController = {
                 const deleteList = await listDatamapper.deleteOneList(listId)
             }
 
-            // ! supprimer le wallet + les documents
+            const walletByUser = await listDatamapper.getWalletByUserId(userId)
+            const walletIdArray = []
+            for (const walletId of walletByUser){
+                walletIdArray.push(walletId.id)
+            }
+            for (const walletId of walletIdArray){
+                const deleteDocument = await documentDatamapper.deleteDocumentByWalletId(walletId)
+                const deleteWallet = await walletDatamapper.deleteOneWallet(walletId)
+            }
+
             const deleteUser = await userDatamapper.deleteOneUser(userId)
             res.json("message: l'utilisateur et toutes ses données ont été supprimées")
     },
