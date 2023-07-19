@@ -14,8 +14,8 @@ const TaskController = {
 
   async createOneTask (req, res) {
         const listId = req.params.listId;
-        const {description, position} = req.body;
-        const oneTask = await taskDatamapper.createOneTask(description, position, listId);
+        const {name, position} = req.body;
+        const oneTask = await taskDatamapper.createOneTask(name, position, listId);
         res.json("message: tache créée avec succès");
     },
 

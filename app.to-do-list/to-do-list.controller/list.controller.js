@@ -15,7 +15,7 @@ const listController = {
   async createOneList (req, res) {
         const {name, position, userId} = req.body;
         const oneList = await listDatamapper.createOneList(name, position, userId);
-        res.json(oneList);
+        res.json("liste crée avec succès");
     },
 
   async deleteOneList (req, res) {

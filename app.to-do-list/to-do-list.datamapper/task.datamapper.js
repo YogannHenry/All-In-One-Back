@@ -11,10 +11,10 @@ const taskDatamapper = {
     const result = await pool.query(query, [taskId]);
     return result.rows;
   },
-  async createOneTask (description, position, listId) {
-    const query = `INSERT INTO "task"("description", "position", "listId") VALUES 
+  async createOneTask (name, position, listId) {
+    const query = `INSERT INTO "task"("name", "position", "listId") VALUES 
                     ($1, $2, $3);`;
-    const result = await pool.query(query, [description, position, listId]);
+    const result = await pool.query(query, [name, position, listId]);
     return result.rows;
   },
   async deleteOneTask(taskId) {
