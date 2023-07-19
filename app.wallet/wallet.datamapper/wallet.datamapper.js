@@ -2,7 +2,6 @@ const pool = require("../../database.connexion.js");
 
 const walletDatamapper = {
   async getAllWallet (req, res) {
-    console.log("coucou2")
     const query = 'SELECT * FROM "wallet"';
     const result = await pool.query(query);
     return result.rows;
@@ -27,15 +26,14 @@ const walletDatamapper = {
     return result.rows;
   },
 
-  async modifyOneWallet (name, icon, userId) {
+  async modifyOneWallet (name, icon, walletId) {
     const query = ` UPDATE wallet SET
                            name = $1,
                            icon = $2,
-                           userId = $3,
                            updated_at = now()
-                    WHERE id = $4
+                    WHERE id = $3
                     RETURNING *`;
-  const result = await pool.query(query, [name, icon, userId]);
+  const result = await pool.query(query, [name, icon, walletId]);
   return result.rows;
     
   },

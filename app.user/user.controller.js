@@ -12,8 +12,12 @@ const bcrypt = require("bcrypt")
 const userController = {
     async register (req, res){
             const { pseudo, email, password, passwordConfirm } = req.body;
-            // ! enforcer ces règles avec des regex
-            // ! les mots de passe doivent être minimum de 8 caractères de long et comporter des caractères spéciaux, et des chiffres
+
+            // les mots de passe doivent être minimum de 8 caractères de long et comporter des caractères spéciaux, et des chiffres
+            const passwordRegex = /^(?=.*[a-zA-Z0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
+            if (!passwordRegex.test(password)) {
+                return res.json("message: le mot de passe n'est pas valide");
+            }
             if(password !== passwordConfirm) {
                 return res.json('message: Les mots de passe ne correspondent pas');
             }
@@ -31,6 +35,7 @@ const userController = {
             res.json('message: inscription réussie');
     },
     async logIn (req, res){
+            // ! rajouter l'ip dans le token
             const {pseudo, email, password} = req.body
             const user = await userDatamapper.getUserByEmail(email)
             if (!user) {
@@ -78,7 +83,7 @@ const userController = {
                 const deleteList = await listDatamapper.deleteOneList(listId)
             }
 
-            const walletByUser = await listDatamapper.getWalletByUserId(userId)
+            const walletByUser = await walletDatamapper.getWalletByUserId(userId)
             const walletIdArray = []
             for (const walletId of walletByUser){
                 walletIdArray.push(walletId.id)

@@ -1,4 +1,4 @@
-const documentDatamapper = require("../document.datamapper/document.datamapper.js")
+const documentDatamapper = require('../../app.wallet/wallet.datamapper/document.datamapper.js')
 
 const documentController = {
   async getAllDocument (req, res) {
@@ -14,8 +14,8 @@ const documentController = {
 
   async createOneDocument (req, res) {
         const walletId = req.params.walletId;
-        const {description, position} = req.body;
-        const oneDocument = await documentDatamapper.createOneDocument(description, position, walletId);
+        const {name, information, file, icon} = req.body;
+        const oneDocument = await documentDatamapper.createOneDocument(name, information, file, icon, walletId);
         res.json("message: Document créée avec succès");
     },
 
@@ -29,7 +29,7 @@ const documentController = {
         const documentId = req.params.documentId;
         const {description, position} = req.body;
         const updatedDocument = await documentDatamapper.modifyOneDocument(description, position, documentId);
-        res.json(updatedDocument);
+        res.json("modification réussie");
     }
 }
 

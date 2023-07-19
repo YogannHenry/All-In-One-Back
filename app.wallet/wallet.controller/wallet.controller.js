@@ -1,4 +1,5 @@
 const walletDatamapper = require ("../../app.wallet/wallet.datamapper/wallet.datamapper.js")
+const documentDatamapper = require('../../app.wallet/wallet.datamapper/document.datamapper.js')
 
 const walletController = {
   async getAllWallet (req, res) {
@@ -15,14 +16,14 @@ const walletController = {
   async createOneWallet (req, res) {
         const {name, icon, userId} = req.body;
         const oneWallet = await walletDatamapper.createOneWallet(name, icon, userId);
-        res.json(oneWallet);
+        res.json("création réussie");
     },
 
   async deleteOneWallet (req, res) {
         const walletId = req.params.walletId;
         const deleteDocumentByWalletId = await documentDatamapper.deleteDocumentByWalletId(walletId);
         const oneWallet = await walletDatamapper.deleteOneWallet(walletId);
-        res.json(oneWallet);
+        res.json("suppression réussie");
     },
     
     async modifyOneWallet (req,res) {
