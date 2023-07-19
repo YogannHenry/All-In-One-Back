@@ -29,9 +29,9 @@ const userDatamapper= {
 
   async modifyOneUser (pseudo, email, password, userId) {
     const query = ` UPDATE "user" SET
-                           pseudo = $1,
-                           email = $2,
-                           password = $3
+                        pseudo = COALESCE($1, pseudo),
+                        email = COALESCE($2, email),
+                        password = COALESCE($3, password)
                     WHERE id = $4
                     RETURNING *`
   const result = await pool.query(query, [pseudo, email, password, userId]);

@@ -12,21 +12,9 @@ const bcrypt = require("bcrypt")
 const userController = {
     async register (req, res){
             const { pseudo, email, password, passwordConfirm } = req.body;
-
-            // les mots de passe doivent être minimum de 8 caractères de long et comporter des caractères spéciaux, et des chiffres
-            const passwordRegex = /^(?=.*[a-zA-Z0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
-            if (!passwordRegex.test(password)) {
-                return res.json("message: le mot de passe n'est pas valide");
-            }
-            if(password !== passwordConfirm) {
-                return res.json('message: Les mots de passe ne correspondent pas');
-            }
-            if(! emailValidator.validate(email)) {
-                return res.json('message: votre email n\'est pas valide');
-            }
             const exists = await userDatamapper.getUserByEmail(email)
             if(exists) {
-                return res.json('message: qqchose s\'est mal passé');
+                return res.json('message: email ou mot de passe incorrect');
             }
             const salt = await bcrypt.genSalt(10);
             const passwordHash = await bcrypt.hash(password, salt);
@@ -35,7 +23,6 @@ const userController = {
             res.json('message: inscription réussie');
     },
     async logIn (req, res){
-            // ! rajouter l'ip dans le token
             const {pseudo, email, password} = req.body
             const user = await userDatamapper.getUserByEmail(email)
             if (!user) {
@@ -52,7 +39,8 @@ const userController = {
               {
                 id: user.id,
                 email: user.email,
-                pseudo: user.pseudo
+                pseudo: user.pseudo,
+                ip: req.ip
               },
               process.env.JSON_WEB_TOKEN_PRIVATE_KEY,
               { expiresIn },
@@ -71,54 +59,54 @@ const userController = {
         // supprimer le token?? ca se fait du coté front je crois, donc en back, 
         // je crois qu'on a rien a faire, sauf peut-etre supprimer la signature ?
     },
+    async getUserById (req, res){
+        const id = req.params.id
+        const user = await userDatamapper.getUserById(id)
+        res.json(user)
+    }, 
     async deleteUser(req, res){
             const userId = req.params.userId
-            const listByUser = await listDatamapper.getListByUserId(userId)
-            const listIdArray = []
-            for (const listId of listByUser){
-                listIdArray.push(listId.id)
-            }
-            for (const listId of listIdArray){
-                const deleteTask = await taskDatamapper.deleteTaskByListId(listId)
-                const deleteList = await listDatamapper.deleteOneList(listId)
-            }
-
-            const walletByUser = await walletDatamapper.getWalletByUserId(userId)
-            const walletIdArray = []
-            for (const walletId of walletByUser){
-                walletIdArray.push(walletId.id)
-            }
-            for (const walletId of walletIdArray){
-                const deleteDocument = await documentDatamapper.deleteDocumentByWalletId(walletId)
-                const deleteWallet = await walletDatamapper.deleteOneWallet(walletId)
-            }
-
-            const deleteUser = await userDatamapper.deleteOneUser(userId)
-            res.json("message: l'utilisateur et toutes ses données ont été supprimées")
+            const existedUser = await userDatamapper.getUserById(userId)
+            if (!existedUser){
+                res.status(404).json("message: l'utilisateur n'existe pas")
+            } else {
+                const listByUser = await listDatamapper.getListByUserId(userId)
+                const listIdArray = []
+                for (const listId of listByUser){
+                    listIdArray.push(listId.id)
+                }
+                for (const listId of listIdArray){
+                    const deleteTask = await taskDatamapper.deleteTaskByListId(listId)
+                    const deleteList = await listDatamapper.deleteOneList(listId)
+                }
+                const walletByUser = await walletDatamapper.getWalletByUserId(userId)
+                const walletIdArray = []
+                for (const walletId of walletByUser){
+                    walletIdArray.push(walletId.id)
+                }
+                for (const walletId of walletIdArray){
+                    const deleteDocument = await documentDatamapper.deleteDocumentByWalletId(walletId)
+                    const deleteWallet = await walletDatamapper.deleteOneWallet(walletId)
+                }
+                const deleteUser = await userDatamapper.deleteOneUser(userId)
+                res.json("message: l'utilisateur et toutes ses données ont été supprimées")
+            }   
     },
     async modifyUser(req, res){
             const userId = req.params.userId
-            const {pseudo, email, password, passwordConfirm} = req.body
-
-            if(password !== passwordConfirm) {
-                return res.json('message: Les mots de passe ne correspondent pas');
+            const existedUser = await userDatamapper.getUserById(userId)
+            let passwordHash = null
+            if (!existedUser){
+                res.status(404).json("message: l'utilisateur n'existe pas")
+            } else {
+                const {pseudo, email, password, passwordConfirm} = req.body
+                if(password){
+                    const salt = await bcrypt.genSalt(10);
+                    passwordHash = await bcrypt.hash(password, salt);
+                }
+                const updatedUser = await userDatamapper.modifyOneUser(pseudo, email, passwordHash, userId)
+                res.json(updatedUser)
             }
-            if(! emailValidator.validate(email)) {
-                return res.json('message: votre email n\'est pas valide');
-            }
-            const exists = await userDatamapper.getUserByEmail(email)
-            if(exists) {
-                return res.json('message: qqchose s\'est mal passé');
-            }
-            const salt = await bcrypt.genSalt(10);
-            const passwordHash = await bcrypt.hash(password, salt);
-            const updatedUser = await userDatamapper.modifyOneUser(pseudo, email, passwordHash, userId)
-            res.json(updatedUser)
-    },
-    async getUserById (req, res){
-            const id = req.params.id
-            const user = await userDatamapper.getUserById(id)
-            res.json(user)
     }
 }
 

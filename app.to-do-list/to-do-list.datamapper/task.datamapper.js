@@ -13,7 +13,7 @@ const taskDatamapper = {
   },
   async createOneTask (name, listId) {
     const query = `INSERT INTO "task"("name", "listId") VALUES 
-                    ($1, $2);`;
+                    ($1, $2) RETURNING *`;
     const result = await pool.query(query, [name, listId]);
     return result.rows;
   },

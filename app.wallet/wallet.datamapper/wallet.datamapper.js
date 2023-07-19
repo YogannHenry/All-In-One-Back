@@ -15,7 +15,7 @@ const walletDatamapper = {
 
   async createOneWallet (name, icon, userId) {
     const query = `INSERT INTO "wallet"("name", "icon", "userId") VALUES 
-                    ($1, $2, $3)`;
+                    ($1, $2, $3) RETURNING *`;
     const result = await pool.query(query, [name, icon, userId]);
     return result.rows;
   },

@@ -15,7 +15,7 @@ const listDatamapper = {
 
   async createOneList (name, userId) {
     const query = `INSERT INTO "list"("name", "userId") VALUES 
-                    ($1, $2)`;
+                    ($1, $2) RETURNING *`;
     const result = await pool.query(query, [name, userId]);
     return result.rows;
   },

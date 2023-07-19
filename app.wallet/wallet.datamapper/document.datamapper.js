@@ -13,7 +13,7 @@ const documentDatamapper = {
   },
   async createOneDocument (name, information, file, icon, walletId) {
     const query = `INSERT INTO "document"("name", "information", "file", "icon", "walletId") VALUES 
-                    ($1, $2, $3, $4, $5);`;
+                    ($1, $2, $3, $4, $5) RETURNING *;`;
     const result = await pool.query(query, [name, information, file, icon, walletId]);
     return result.rows;
   },

@@ -16,21 +16,30 @@ const walletController = {
   async createOneWallet (req, res) {
         const {name, icon, userId} = req.body;
         const oneWallet = await walletDatamapper.createOneWallet(name, icon, userId);
-        res.json("création réussie");
+        res.json(oneWallet);
     },
 
   async deleteOneWallet (req, res) {
         const walletId = req.params.walletId;
-        const deleteDocumentByWalletId = await documentDatamapper.deleteDocumentByWalletId(walletId);
-        const oneWallet = await walletDatamapper.deleteOneWallet(walletId);
-        res.json("suppression réussie");
+        const walletExisted = await walletDatamapper.getOneWallet(walletId)
+        if(walletExisted.length === 0){
+          res.status(404).json("message: le wallet n'existe pas")
+        } else {
+          const deleteDocumentByWalletId = await documentDatamapper.deleteDocumentByWalletId(walletId);
+          const oneWallet = await walletDatamapper.deleteOneWallet(walletId);
+          res.json("message: le wallet a été supprimée avec succès");
+        }
     },
-    
     async modifyOneWallet (req,res) {
         const walletId = req.params.walletId;
+        const walletExisted = await walletDatamapper.getOneWallet(walletId)
+        if(walletExisted.length === 0){
+          res.status(404).json("message: le wallet n'existe pas")
+        } else {
         const {name, icon} = req.body;
         const updatedWallet = await walletDatamapper.modifyOneWallet (name, icon, walletId);
         res.json(updatedWallet);
+        }
     }
 }
 
