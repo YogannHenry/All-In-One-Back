@@ -8,7 +8,6 @@ const schemaValidator = require('../../app.middleware/schema.validate.middleware
 
 const toDoListSchema = require('../to-do-list.schema/to-do-list.schema.js')
 
-
 const router = express.Router();
 
 // Routes recuperation liste
@@ -25,11 +24,7 @@ router.delete('/api/list/:listId', wrapperController(listController.deleteOneLis
 router.get('/api/list/:listId/task', wrapperController(taskController.getAllTask));
 router.get('/api/list/task/:taskId', wrapperController(taskController.getOneTask));
 router.post('/api/list/:listId/task', schemaValidator(toDoListSchema), wrapperController(taskController.createOneTask));
-router.put('/api/list/task/:taskId', wrapperController(taskController.modifyOneTask));
+router.put('/api/list/task/:taskId', schemaValidator(toDoListSchema), wrapperController(taskController.modifyOneTask));
 router.delete('/api/list/task/:taskId', wrapperController(taskController.deleteOneTask));
-
-
-
-
 
 module.exports = router;

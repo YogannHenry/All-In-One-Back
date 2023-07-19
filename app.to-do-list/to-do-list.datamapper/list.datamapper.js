@@ -13,10 +13,10 @@ const listDatamapper = {
     return result.rows;
   },
 
-  async createOneList (name, position, userId) {
-    const query = `INSERT INTO "list"("name", "position", "userId") VALUES 
-                    ($1, $2, $3)`;
-    const result = await pool.query(query, [name, position, userId]);
+  async createOneList (name, userId) {
+    const query = `INSERT INTO "list"("name", "userId") VALUES 
+                    ($1, $2)`;
+    const result = await pool.query(query, [name, userId]);
     return result.rows;
   },
 

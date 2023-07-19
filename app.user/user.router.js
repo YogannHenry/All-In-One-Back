@@ -3,13 +3,17 @@ const router = express.Router();
 
 const wrapperController = require('../app.middleware/wrapper.controller.js');
 const JWTverification = require('../app.middleware/JWTverification.controller.js')
+
+const schemaValidator = require('../app.middleware/schema.validate.middleware.js')
+const userSchema = require('./user.schema.js')
+
 const userController = require('./user.controller.js')
 
 // route pour l'inscription
-router.post('/api/register', wrapperController(userController.register))
+router.post('/api/register', schemaValidator(userSchema.registerSchema), wrapperController(userController.register))
 
 // route pour la connexion
-router.post('/api/login', wrapperController(userController.logIn))
+router.post('/api/login', schemaValidator(userSchema.loginSchema), wrapperController(userController.logIn))
 
 // route pour la déconnexion
 router.delete('/logout', wrapperController(userController.logOut))
@@ -28,3 +32,6 @@ router.get('/api/protected', JWTverification, (req, res) => {
 
 
 module.exports = router;
+
+
+

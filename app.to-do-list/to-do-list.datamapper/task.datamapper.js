@@ -11,10 +11,10 @@ const taskDatamapper = {
     const result = await pool.query(query, [taskId]);
     return result.rows;
   },
-  async createOneTask (name, position, listId) {
-    const query = `INSERT INTO "task"("name", "position", "listId") VALUES 
-                    ($1, $2, $3);`;
-    const result = await pool.query(query, [name, position, listId]);
+  async createOneTask (name, listId) {
+    const query = `INSERT INTO "task"("name", "listId") VALUES 
+                    ($1, $2);`;
+    const result = await pool.query(query, [name, listId]);
     return result.rows;
   },
   async deleteOneTask(taskId) {
@@ -22,14 +22,14 @@ const taskDatamapper = {
     const result = await pool.query(query, [taskId]);
     return result.rows;
   },
-  async modifyOneTask(description, position, taskId) {
+  async modifyOneTask(name, position, taskId) {
     const query = ` UPDATE "task" SET
-                           description = $1,
+                           name = $1,
                            position = $2,
                            updated_at = now()
                     WHERE id = $3
                     RETURNING *`;
-  const result = await pool.query(query, [description, position, taskId]);
+  const result = await pool.query(query, [name, position, taskId]);
   return result.rows;
   }, 
   async deleteTaskByListId (listId) {

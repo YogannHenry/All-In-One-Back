@@ -13,8 +13,8 @@ const listController = {
     },
 
   async createOneList (req, res) {
-        const {name, position, userId} = req.body;
-        const oneList = await listDatamapper.createOneList(name, position, userId);
+        const {name, userId} = req.body;
+        const oneList = await listDatamapper.createOneList(name, userId);
         res.json("liste crée avec succès");
     },
 
@@ -27,7 +27,11 @@ const listController = {
     
     async modifyOneList (req,res) {
         const listId = req.params.listId;
-        const {name, position} = req.body;
+        const {name} = req.body;
+        let {position} =  req.body
+        if (!position){
+          position=0
+        }
         const updatedList = await listDatamapper.modifyOneList (name, position, listId);
         res.json(updatedList);
     }
