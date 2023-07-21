@@ -20,7 +20,7 @@ router.delete('/logout', wrapperController(userController.logOut))
 
 // routes pour supprimer ou modifier un utilisateur
 router.delete('/api/user/:userId', wrapperController(userController.deleteUser))
-router.put('/api/user/:userId', wrapperController(userController.modifyUser))
+router.put('/api/user/:userId', schemaValidator(userSchema.modifyUserSchema), wrapperController(userController.modifyUser))
 
 router.get('/api/user/:id', wrapperController(userController.getUserById))
 

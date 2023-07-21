@@ -5,7 +5,7 @@ const walletDatamapper = require("../app.wallet/wallet.datamapper/wallet.datamap
 const documentDatamapper = require("../app.wallet/wallet.datamapper/document.datamapper")
 
 const jwt = require("jsonwebtoken");
-const emailValidator = require("email-validator");
+//const emailValidator = require("email-validator");
 const bcrypt = require("bcrypt")
 
 

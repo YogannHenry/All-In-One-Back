@@ -1,6 +1,7 @@
 module.exports = ( schema) => async (req, res, next) => {
-  console.log("middleware validation schemas")
+  //Middleware validation schemas avec Joi
   try {
+    console.log(schema)
     await schema.validateAsync(req.body);
     return next();
   } catch (err) {

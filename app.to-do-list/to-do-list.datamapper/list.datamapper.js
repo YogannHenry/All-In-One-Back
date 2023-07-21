@@ -28,8 +28,8 @@ const listDatamapper = {
 
   async modifyOneList (name, position, listId) {
     const query = ` UPDATE list SET
-                           name = $1,
-                           position = $2,
+                           name = COALESCE($1, name),
+                           position = COALESCE($2, position),
                            updated_at = now()
                     WHERE id = $3
                     RETURNING *`;

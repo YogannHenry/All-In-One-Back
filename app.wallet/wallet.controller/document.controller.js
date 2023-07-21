@@ -36,7 +36,7 @@ const documentController = {
         if(existedDocument.length === 0){
             res.status(404).json("message: le document n'existe pas")
         } else {
-        const {description, position} = req.body;
+        const {name, information, file, icon, documentId} = req.body;
         const updatedDocument = await documentDatamapper.modifyOneDocument(name, information, file, icon, documentId);
         res.json("message: Document modifié avec succès");
         }

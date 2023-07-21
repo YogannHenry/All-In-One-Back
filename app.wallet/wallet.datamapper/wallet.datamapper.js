@@ -28,15 +28,15 @@ const walletDatamapper = {
 
   async modifyOneWallet (name, icon, walletId) {
     const query = ` UPDATE wallet SET
-                           name = $1,
-                           icon = $2,
+                           name = COALESCE($1, name),
+                           icon = COALESCE($2, icon),
                            updated_at = now()
                     WHERE id = $3
                     RETURNING *`;
   const result = await pool.query(query, [name, icon, walletId]);
-  return result.rows;
-    
+  return result.rows;  
   },
+  
   async getWalletByUserId(userId){
     const query = `SELECT id FROM "wallet" WHERE "userId" = $1`;
     const result = await pool.query(query, [userId]);

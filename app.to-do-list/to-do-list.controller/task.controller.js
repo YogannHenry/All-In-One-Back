@@ -2,7 +2,9 @@ const taskDatamapper = require("../to-do-list.datamapper/task.datamapper.js")
 
 const TaskController = {
   async getAllTask (req, res) {
-        const allTask = await taskDatamapper.getAllTask();
+        const listId = req.params.listId
+        console.log(listId)
+        const allTask = await taskDatamapper.getAllTask(listId);
         res.json(allTask);
     },
 

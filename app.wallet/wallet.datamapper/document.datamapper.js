@@ -24,10 +24,10 @@ const documentDatamapper = {
   },
   async modifyOneDocument(name, information, file, icon, documentId) {
     const query = ` UPDATE "document" SET
-                            name = $1,
-                            information = $2,
-                            file = $3,
-                            icon = $4,
+                            name = COALESCE($1, name),
+                            information = COALESCE($2, information),
+                            file = COALESCE($3, file),
+                            icon = COALESCE($4, icon),
                            updated_at = now()
                     WHERE id = $5
                     RETURNING *`;
