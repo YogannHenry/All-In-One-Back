@@ -8,7 +8,7 @@ const userSchema ={
     passwordConfirm: Joi.ref('password')
   }),
   loginSchema: Joi.object({
-    pseudo: Joi.string().max(15).required(),
+    //pseudo: Joi.string().max(15).optional(),
     email: Joi.string().email().required(),
     password: Joi.string().required(),
   }),

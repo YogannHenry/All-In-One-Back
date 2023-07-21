@@ -50,10 +50,10 @@ const userController = {
             const time = now.getTime();
             const expireAt = time + expiresIn
             
-            res.token = token
+
             res.expireAt = expireAt
             console.log(res.token)
-            res.json({token:`Bearer ${token}`})
+            res.json({token:`Bearer ${token}`, logged: true, pseudo: user.pseudo})
                
    },
     async logOut (req, res){
