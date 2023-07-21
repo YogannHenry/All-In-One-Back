@@ -5,12 +5,14 @@ const toDoListRouter = require('./app.to-do-list/to-do-list.router/to-do-list.ro
 const userRouter = require('./app.user/user.router.js')
 const walletRouter = require('./app.wallet/wallet.router/wallet.router.js');
 const app = express() ;
+const cors = require('cors')
 const port = process.env.PORT ?? 1665;
 
 
 
 
 app.use(express.json());
+app.use(cors());
 
 app.use(userRouter)
 app.use(toDoListRouter);

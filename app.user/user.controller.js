@@ -53,7 +53,8 @@ const userController = {
             res.token = token
             res.expireAt = expireAt
             console.log(res.token)
-            res.json("connexion réussie")       
+            res.json({token:`Bearer ${token}`})
+               
    },
     async logOut (req, res){
         // supprimer le token?? ca se fait du coté front je crois, donc en back, 

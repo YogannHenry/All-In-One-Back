@@ -16,7 +16,7 @@ router.post('/api/register', schemaValidator(userSchema.registerSchema), wrapper
 router.post('/api/login', schemaValidator(userSchema.loginSchema), wrapperController(userController.logIn))
 
 // route pour la déconnexion
-router.delete('/logout', wrapperController(userController.logOut))
+router.delete('/api/logout', wrapperController(userController.logOut))
 
 // routes pour supprimer ou modifier un utilisateur
 router.delete('/api/user/:userId', wrapperController(userController.deleteUser))
