@@ -17,7 +17,7 @@ CREATE TABLE "task" (
   "id" int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   "name" text NOT NULL DEFAULT 'nouvelle tâche',
   "position" int NOT NULL DEFAULT 0,
-  "status" boolean NOT NULL DEFAULT "false",
+  "status" boolean NOT NULL DEFAULT false,
   "listId" int NOT NULL REFERENCES "list"("id"),
   "created_at" timestamptz NOT NULL DEFAULT now(),
   "updated_at" timestamptz

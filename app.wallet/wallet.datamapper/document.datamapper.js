@@ -6,6 +6,11 @@ const documentDatamapper = {
     const result = await pool.query(query);
     return result.rows;
   },
+  async getAllDocumentByWalletId (walletId) {
+    const query = `SELECT * FROM "document" WHERE "walletId" = $1`
+    const result = await pool.query(query, [walletId]);
+    return result.rows;
+  },
   async getOneDocument (documentId) {
     const query = 'SELECT * FROM "document" WHERE id = $1';
     const result = await pool.query(query, [documentId]);
@@ -28,7 +33,7 @@ const documentDatamapper = {
                             information = COALESCE($2, information),
                             file = COALESCE($3, file),
                             icon = COALESCE($4, icon),
-                           updated_at = now()
+                            updated_at = now()
                     WHERE id = $5
                     RETURNING *`;
   const result = await pool.query(query, [name, information, file, icon, documentId]);

@@ -38,7 +38,6 @@ const listDatamapper = {
     
   },
   async getListByUserId(userId){
-    //! il faut retourner un tableau de listId
     const query = `SELECT id FROM "list" WHERE "userId" = $1`;
     const result = await pool.query(query, [userId]);
     return result.rows;

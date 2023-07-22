@@ -1,11 +1,18 @@
 const pool = require("../../database.connexion.js")
 
 const taskDatamapper = {
-  async getAllTask (listId) {
+  async getAllTask () {
+    const query = 'SELECT * FROM "task"'
+    const result = await pool.query(query);
+    return result.rows;
+  },
+
+  async getAllTaskByListId (listId) {
     const query = `SELECT * FROM "task" WHERE "listId" = $1`
     const result = await pool.query(query, [listId]);
     return result.rows;
   },
+
   async getOneTask (taskId) {
     const query = 'SELECT * FROM "task" WHERE id = $1';
     const result = await pool.query(query, [taskId]);

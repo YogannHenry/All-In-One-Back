@@ -14,7 +14,8 @@ router.delete('/api/wallet/:walletId', wrapperController(walletController.delete
 router.put('/api/wallet/:walletId', wrapperController(walletController.modifyOneWallet))
 
 // routes récupération document
-router.get('/api/wallet/:walletId/document', wrapperController(documentController.getAllDocument))
+router.get('/api/document', wrapperController(documentController.getAllDocument))
+router.get('/api/wallet/:walletId/document', wrapperController(documentController.getAllDocumentByWalletId))
 router.get('/api/wallet/document/:documentId', wrapperController(documentController.getOneDocument))
 router.post('/api/wallet/:walletId/document', wrapperController(documentController.createOneDocument))
 router.delete('/api/wallet/document/:documentId', wrapperController(documentController.deleteOneDocument))

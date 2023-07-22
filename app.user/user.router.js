@@ -22,11 +22,13 @@ router.delete('/api/logout', wrapperController(userController.logOut))
 router.delete('/api/user/:userId', wrapperController(userController.deleteUser))
 router.put('/api/user/:userId', schemaValidator(userSchema.modifyUserSchema), wrapperController(userController.modifyUser))
 
+// routes pour récupérer les user
 router.get('/api/user/:id', wrapperController(userController.getUserById))
+router.get('/api/user/', wrapperController(userController.getAllUser))
 
+
+// route pour tester l'authentification
 router.get('/api/protected', JWTverification, (req, res) => {
-  // Le middleware authMiddleware a été exécuté avec succès
-  // Les informations du token peuvent être utilisées ici
   res.json({ message: 'Route protégée. Accès autorisé.' });
 });
 

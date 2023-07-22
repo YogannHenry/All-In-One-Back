@@ -60,6 +60,10 @@ const userController = {
         // supprimer le token?? ca se fait du coté front je crois, donc en back, 
         // je crois qu'on a rien a faire, sauf peut-etre supprimer la signature ?
     },
+    async getAllUser (req, res){
+        const user = await userDatamapper.getAllUser()
+        res.json(user)
+    }, 
     async getUserById (req, res){
         const id = req.params.id
         const user = await userDatamapper.getUserById(id)

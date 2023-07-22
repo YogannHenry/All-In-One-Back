@@ -1,17 +1,21 @@
-const pool = require("../database.connexion.js")
+const pool = require("../../database.connexion.js")
 
-const cartoolDatamapper= {
-    
-  async getCarById (id) {
+const carDatamapper= {
+  async getAllCar () {
+    const query = `SELECT * FROM "car"`;
+    const result = await pool.query(query);
+    return result.rows;
+  },
+  async getOneCar (id) {
     const query = `SELECT * FROM "car" WHERE id = $1`;
     const result = await pool.query(query, [id]);
     return result.rows;
   },
   
-  async createCar (name, type, current_km, km_per_month, icon ) {
-    const query =`INSERT INTO "car"("name", "type", "current_km", "km_per_month", "icon") VALUES 
-    ($1, $2, $3, $4, $5);`;
-    const result = await pool.query(query, [name, type, current_km, km_per_month, icon]);
+  async createOneCar (name, type, current_km, km_per_month, icon, userId) {
+    const query =`INSERT INTO "car"("name", "type", "current_km", "km_per_month", "icon", "userId") VALUES 
+    ($1, $2, $3, $4, $5, $6) RETURNING *;`;
+    const result = await pool.query(query, [name, type, current_km, km_per_month, icon, userId]);
     return result.rows;
   },
   
@@ -36,4 +40,4 @@ const cartoolDatamapper= {
   }
 }
 
-module.exports = cartoolDatamapper
+module.exports = carDatamapper

@@ -5,30 +5,29 @@ const wrapperController = require('../app.middleware/wrapper.controller.js');
 const JWTverification = require('../app.middleware/JWTverification.controller.js');
 
 const schemaValidator = require('../app.middleware/schema.validate.middleware.js');
-const cartoolSchema = require('./cartool.schema.js');
+const carSchema = require('./cartool.schema/car.schema.js');
+const maintenanceSchema = require('./cartool.schema/maintenance.schema.js');
 
-const cartoolController = require('./cartool.controller.js');
+const carController = require('./cartool.controller/car.controller.js');
+const maintenanceController = require('./cartool.controller/maintenance.controller.js');
 
-// route pour l'inscription
-router.post('/api/register', schemaValidator(userSchema.registerSchema), wrapperController(userController.register))
 
-// route pour la connexion
-router.post('/api/login', schemaValidator(userSchema.loginSchema), wrapperController(userController.logIn))
+// Routes recuperation car
 
-// route pour la déconnexion
-router.delete('/api/logout', wrapperController(userController.logOut))
+router.get('/api/car', wrapperController(carController.getAllCar));
+router.get('/api/car/:carId', wrapperController(carController.getOneCar));
+router.post('/api/car', wrapperController(carController.createOneCar));
+router.put('/api/car/:carId', wrapperController(carController.modifyOneCar));
+router.delete('/api/car/:carId', wrapperController(carController.deleteOneCar));
 
-// routes pour supprimer ou modifier un utilisateur
-router.delete('/api/user/:userId', wrapperController(userController.deleteUser))
-router.put('/api/user/:userId', schemaValidator(userSchema.modifyUserSchema), wrapperController(userController.modifyUser))
 
-router.get('/api/user/:id', wrapperController(userController.getUserById))
+// Routes recuperation taches
 
-router.get('/api/protected', JWTverification, (req, res) => {
-  // Le middleware authMiddleware a été exécuté avec succès
-  // Les informations du token peuvent être utilisées ici
-  res.json({ message: 'Route protégée. Accès autorisé.' });
-});
-
+router.get('/api/maintenance', wrapperController(maintenanceController.getAllMaintenance));
+router.get('/api/car/:carId/maintenance', wrapperController(maintenanceController.getAllMaintenanceByCarId));
+router.get('/api/car/maintenance/:maintenanceId', wrapperController(maintenanceController.getOneMaintenance));
+router.post('/api/car/:carId/maintenance', wrapperController(maintenanceController.createOneMaintenance));
+router.put('/api/car/maintenance/:maintenanceId', wrapperController(maintenanceController.modifyOneMaintenance));
+router.delete('/api/car/maintenance/:maintenanceId', wrapperController(maintenanceController.deleteOneMaintenance));
 
 module.exports = router;

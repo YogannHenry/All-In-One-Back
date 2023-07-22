@@ -21,7 +21,8 @@ router.delete('/api/list/:listId', wrapperController(listController.deleteOneLis
 
 // Routes recuperation taches
 
-router.get('/api/list/:listId/task', wrapperController(taskController.getAllTask));
+router.get('/api/task', wrapperController(taskController.getAllTask));
+router.get('/api/list/:listId/task/', wrapperController(taskController.getAllTaskByListId));
 router.get('/api/list/task/:taskId', wrapperController(taskController.getOneTask));
 router.post('/api/list/:listId/task', schemaValidator(toDoListSchema), wrapperController(taskController.createOneTask));
 router.put('/api/list/task/:taskId', schemaValidator(toDoListSchema), wrapperController(taskController.modifyOneTask));

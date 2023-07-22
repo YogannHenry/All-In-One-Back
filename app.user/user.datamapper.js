@@ -13,6 +13,12 @@ const userDatamapper= {
     const result = await pool.query(query, [id]);
     return result.rows;
   },
+
+  async getAllUser () {
+    const query = `SELECT * FROM "user"`;
+    const result = await pool.query(query);
+    return result.rows;
+  },
   
   async createUser (pseudo, email, passwordHash) {
     const query =`INSERT INTO "user"("pseudo", "email", "password") VALUES 

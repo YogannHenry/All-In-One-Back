@@ -1,5 +1,9 @@
 BEGIN;
 
+TRUNCATE TABLE "user" CASCADE;
+
+ALTER SEQUENCE user_id_seq RESTART WITH 1;
+
 INSERT INTO "user" (pseudo, email, password) VALUES 
 ('pseudo1a', 'test1a@gmail.com','password1a'),
 ('pseudo2b', 'test2b@gmail.com', 'password2b'),
