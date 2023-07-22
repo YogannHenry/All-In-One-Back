@@ -13,6 +13,10 @@ const documentController = {
 
     async getAllDocumentByWalletId (req, res) {
         const walletId = req.params.walletId
+        const wallet = await walletDatamapper.getOneWallet(walletId)
+        if(wallet.length === 0){
+            res.status(404).json(`message: il n'existe aucun portefeuille avec l'id ${listId} `)
+        }
         const allWallet = await documentDatamapper.getAllDocumentByWalletId(walletId);
         if (allWallet.length === 0) {
           res.status(404).json(`message: il n'existe aucun document pour le wallet ${walletId}`)

@@ -12,6 +12,10 @@ const taskController = {
 
   async getAllTaskByListId (req, res) {
       const listId = req.params.listId
+      const list = await listDatamapper.getOneList(listId)
+      if(list.length === 0){
+        res.status(404).json(`message: il n'existe aucune liste avec l'id ${listId} `)
+      }
       const allTask = await taskDatamapper.getAllTaskByListId(listId);
       if (allTask.length === 0) {
         res.status(404).json(`message: il n'existe aucune tache pour la liste ${listId}`)
