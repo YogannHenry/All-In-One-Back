@@ -7,7 +7,7 @@ const documentController = {
         const allDocument = await documentDatamapper.getAllDocument();
         if (allDocument.length === 0) {
             res.status(404).json(`message: il n'existe aucun document`)
-          }
+        }
         res.json(allDocument);
     },
 
