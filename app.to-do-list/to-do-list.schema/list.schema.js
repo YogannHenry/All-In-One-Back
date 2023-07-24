@@ -12,5 +12,5 @@ const listSchema ={
     userId: Joi.number().optional()
   }).min(1).required()
 };
-
+  
 module.exports = listSchema
