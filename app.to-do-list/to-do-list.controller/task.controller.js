@@ -61,8 +61,8 @@ const taskController = {
         if(taskExisted.length === 0){
           res.status(404).json(`message: la tache ${taskId} n'existe pas`)
         } else {
-          const {name, position} = req.body;
-          const updatedTask = await taskDatamapper.modifyOneTask(name, position, taskId);
+          const {name, status, position} = req.body;
+          const updatedTask = await taskDatamapper.modifyOneTask(name, position, status, taskId);
           res.json(updatedTask);
         }
     }

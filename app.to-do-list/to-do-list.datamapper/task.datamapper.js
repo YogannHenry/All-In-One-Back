@@ -29,14 +29,15 @@ const taskDatamapper = {
     const result = await pool.query(query, [taskId]);
     return result.rows;
   },
-  async modifyOneTask(name, position, taskId) {
+  async modifyOneTask(name, position, status, taskId) {
     const query = ` UPDATE "task" SET
                           name = COALESCE($1, name),
                           position = COALESCE($2, position),
+                          status = COALESCE($3, status),
                           updated_at = now()
-                    WHERE id = $3
+                    WHERE id = $4
                     RETURNING *`;
-  const result = await pool.query(query, [name, position, taskId]);
+  const result = await pool.query(query, [name, position, status, taskId]);
   return result.rows;
   }, 
   async deleteTaskByListId (listId) {

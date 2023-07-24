@@ -33,7 +33,6 @@ const maintenanceController = {
         const {last_date_verif,last_km_verif,validity_period,validity_km} = oneMaintenance[0]
         
         // calcul des km restant avant entretien
-        
         const lastKmRemaining = last_km_verif + validity_km
         
         // calcul du temps restant avant entretien

@@ -1,4 +1,6 @@
 const express = require('express');
+const multer = require('multer')
+const upload = multer({ dest: 'uploads/' });
 
 const wrapperController = require('../../app.middleware/wrapper.controller.js');
 const walletController = require('../wallet.controller/wallet.controller.js');
@@ -17,11 +19,21 @@ router.put('/api/wallet/:walletId', wrapperController(walletController.modifyOne
 router.get('/api/document', wrapperController(documentController.getAllDocument))
 router.get('/api/wallet/:walletId/document', wrapperController(documentController.getAllDocumentByWalletId))
 router.get('/api/wallet/document/:documentId', wrapperController(documentController.getOneDocument))
-router.post('/api/wallet/:walletId/document', wrapperController(documentController.createOneDocument))
+
+router.get('/api/wallet/document/:documentId/download', wrapperController(documentController.downloadOneDocument))
+
+
+router.post('/api/wallet/:walletId/document', upload.single('uploaded_file'), wrapperController(documentController.createOneDocument))
 router.delete('/api/wallet/document/:documentId', wrapperController(documentController.deleteOneDocument))
 router.put('/api/wallet/document/:documentId', wrapperController(documentController.modifyOneDocument))
 
 
-
-
 module.exports = router;
+
+
+
+
+
+
+
+

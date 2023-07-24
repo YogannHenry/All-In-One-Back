@@ -5,7 +5,6 @@ const walletDatamapper = require("../app.wallet/wallet.datamapper/wallet.datamap
 const documentDatamapper = require("../app.wallet/wallet.datamapper/document.datamapper")
 
 const jwt = require("jsonwebtoken");
-//const emailValidator = require("email-validator");
 const bcrypt = require("bcrypt")
 
 
@@ -53,7 +52,7 @@ const userController = {
 
             res.expireAt = expireAt
             console.log(res.token)
-            res.json({token:`Bearer ${token}`, logged: true, pseudo: user.pseudo})
+            res.json({token:`Bearer ${token}`, logged: true, pseudo: user.pseudo, userId:user.id})
                
    },
     async logOut (req, res){

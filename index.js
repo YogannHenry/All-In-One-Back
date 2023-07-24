@@ -1,6 +1,5 @@
 const express = require('express');
-const dotenv = require('dotenv');
-dotenv.config();
+const dotenv = require('dotenv').config();
 const toDoListRouter = require('./app.to-do-list/to-do-list.router/to-do-list.router.js');
 const userRouter = require('./app.user/user.router.js')
 const walletRouter = require('./app.wallet/wallet.router/wallet.router.js');
