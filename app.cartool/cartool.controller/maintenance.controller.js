@@ -1,5 +1,6 @@
 const carDatamapper = require('../cartool.datamapper/car.datamapper.js');
 const maintenanceDatamapper = require('../cartool.datamapper/maintenance.datamapper.js')
+const dayjs = require('dayjs')
 
 const maintenanceController = {
     async getAllMaintenance (req, res) {
@@ -29,7 +30,24 @@ const maintenanceController = {
         if (oneMaintenance.length === 0){
           res.status(404).json(`message: il n'existe aucun entretien avec l'id ${maintenanceId} `)
         }
-         res.json(oneMaintenance);
+        const {last_date_verif,last_km_verif,validity_period,validity_km} = oneMaintenance[0]
+        
+        // calcul des km restant avant entretien
+        
+        const lastKmRemaining = last_km_verif + validity_km
+        
+        // calcul du temps restant avant entretien
+        const lastDate = dayjs(last_date_verif);
+        const resultDate = lastDate
+          .add(validity_period.years || 0, 'years')
+          .add(validity_period.months || 0, 'months')
+          .add(validity_period.days || 0, 'days');
+        const lastTimeRemaining = resultDate.toISOString();
+
+        const oneMaintenanceCalcul = {...oneMaintenance[0], lastKmRemaining, lastTimeRemaining}
+        console.log(oneMaintenanceCalcul) 
+
+        res.json(oneMaintenance);
     },
 
     async createOneMaintenance (req, res) {
