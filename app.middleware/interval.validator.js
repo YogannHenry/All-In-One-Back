@@ -1,5 +1,3 @@
-const Joi = require('joi');
-
 const intervalValidator = (value, helpers) => {
   try {
     const intervalRegex = /^(\d+ years?|\d+ months?|\d+ days?)$/;
@@ -12,4 +10,4 @@ const intervalValidator = (value, helpers) => {
   }
 };
 
-module.exports = intervalValidator
+module.exports = intervalValidator;

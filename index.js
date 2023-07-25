@@ -1,23 +1,21 @@
 const express = require('express');
-const dotenv = require('dotenv').config();
-const toDoListRouter = require('./app.to-do-list/to-do-list.router/to-do-list.router.js');
-const userRouter = require('./app.user/user.router.js')
-const walletRouter = require('./app.wallet/wallet.router/wallet.router.js');
-const cartoolRouter = require('./app.cartool/cartool.router.js');
-const app = express() ;
+require('dotenv').config();
+const toDoListRouter = require('./app.to-do-list/to-do-list.router/to-do-list.router');
+const userRouter = require('./app.user/user.router');
+const walletRouter = require('./app.wallet/wallet.router/wallet.router');
+const cartoolRouter = require('./app.cartool/cartool.router');
+
+const app = express();
 // const cors = require('cors')
 const port = process.env.PORT ?? 1665;
-
-
-
 
 app.use(express.json());
 // app.use(cors());
 
-app.use(userRouter)
+app.use(userRouter);
 app.use(toDoListRouter);
 app.use(walletRouter);
-app.use(cartoolRouter)
+app.use(cartoolRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening on port http://localhost:${port}`);
