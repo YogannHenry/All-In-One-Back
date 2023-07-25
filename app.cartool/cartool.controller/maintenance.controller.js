@@ -35,12 +35,8 @@ const maintenanceController = {
         const {last_date_verif,last_km_verif,validity_period,validity_km} = oneMaintenance[0]
         
         // calcul des km restant avant entretien
-        let lastKmRemaining = 0
-        if (current_km < last_km_verif){ 
-          lastKmRemaining = last_km_verif + validity_km
-        } else {
-          lastKmRemaining = current_km + validity_km
-        }
+         const lastKmRemaining = last_km_verif + validity_km  - current_km
+
         console.log(lastKmRemaining)
         // calcul du temps restant avant entretien
         const lastDate = dayjs(last_date_verif);

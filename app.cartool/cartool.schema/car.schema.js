@@ -1,22 +1,23 @@
 const Joi = require('joi');
 
 const carSchema ={
-  createMaintenanceSchema: Joi.object({
+  createCarSchema: Joi.object({
     name:Joi.string().max(30).required(),
-    last_date_verif:Joi.number().max(7).optional(),
-    last_km_verif: Joi.number().max(7).optional(),
-    validity_period:Joi.number().max(7).optional(),
-    validity_km: Joi.number().max(7).optional(),
+    type:Joi.string().max(15).optional(),
+    current_km: Joi.number().max(9000000).optional(),
+    km_per_month: Joi.number().max(9000000).optional(),
     icon: Joi.string().optional(),
+    userId: Joi.number()
   }),
-  modifyMaintenanceSchema: Joi.object({
+  modifyCarSchema: Joi.object({
     name:Joi.string().max(30).optional(),
-    last_date_verif:Joi.number().max(7).optional(),
-    last_km_verif: Joi.number().max(7).optional(),
-    validity_period:Joi.number().max(7).optional(),
-    validity_km: Joi.number().max(7).optional(),
+    type:Joi.string().max(15).optional(),
+    current_km: Joi.number().max(9000000).optional(),
+    km_per_month:Joi.number().min(9000000).optional(),
     icon: Joi.string().optional(),
+    userId: Joi.number()
   }).min(1).required()
 } 
 
 module.exports = carSchema
+

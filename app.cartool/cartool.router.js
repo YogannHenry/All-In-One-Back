@@ -16,8 +16,8 @@ const maintenanceController = require('./cartool.controller/maintenance.controll
 
 router.get('/api/car', wrapperController(carController.getAllCar));
 router.get('/api/car/:carId', wrapperController(carController.getOneCar));
-router.post('/api/car', wrapperController(carController.createOneCar));
-router.put('/api/car/:carId', wrapperController(carController.modifyOneCar));
+router.post('/api/car', schemaValidator(carSchema.createCarSchema), wrapperController(carController.createOneCar));
+router.put('/api/car/:carId', schemaValidator(carSchema.modifyCarSchema), wrapperController(carController.modifyOneCar));
 router.delete('/api/car/:carId', wrapperController(carController.deleteOneCar));
 
 
@@ -26,7 +26,7 @@ router.delete('/api/car/:carId', wrapperController(carController.deleteOneCar));
 router.get('/api/maintenance', wrapperController(maintenanceController.getAllMaintenance));
 router.get('/api/car/:carId/maintenance', wrapperController(maintenanceController.getAllMaintenanceByCarId));
 router.get('/api/car/maintenance/:maintenanceId', wrapperController(maintenanceController.getOneMaintenance));
-router.post('/api/car/:carId/maintenance', wrapperController(maintenanceController.createOneMaintenance));
+router.post('/api/car/:carId/maintenance', schemaValidator(maintenanceSchema.createMaintenanceSchema), wrapperController(maintenanceController.createOneMaintenance));
 router.put('/api/car/maintenance/:maintenanceId', wrapperController(maintenanceController.modifyOneMaintenance));
 router.delete('/api/car/maintenance/:maintenanceId', wrapperController(maintenanceController.deleteOneMaintenance));
 

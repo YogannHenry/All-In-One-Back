@@ -1,21 +1,23 @@
 const Joi = require('joi');
+const intervalValidator = require('../../app.middleware/interval.validator.js')
 
 const maintenanceSchema ={
-  createCarSchema: Joi.object({
+  createMaintenanceSchema: Joi.object({
     name:Joi.string().max(30).required(),
-    type:Joi.string().max(15).optional(),
-    current_km: Joi.number().max(7).optional(),
-    km_per_month:Joi.number().max(7).optional(),
+    last_date_verif:Joi.date().optional(),
+    last_km_verif: Joi.number().max(9000000).optional(),
+    validity_period:Joi.string().custom(intervalValidator),
+    validity_km: Joi.number().max(9000000).optional(),
     icon: Joi.string().optional(),
-    userId: Joi.number()
+    userId: Joi.number().required()
   }),
-  modifyCarSchema: Joi.object({
+  modifyMaintenanceSchema: Joi.object({
     name:Joi.string().max(30).optional(),
-    type:Joi.string().max(15).optional(),
-    current_km: Joi.number().max(7).optional(),
-    km_per_month:Joi.number().max(7).optional(),
+    last_date_verif:Joi.number().max(7).optional(),
+    last_km_verif: Joi.number().max(9000000).optional(),
+    validity_period: Joi.string().custom(intervalValidator),
+    validity_km: Joi.number().max(9000000).optional(),
     icon: Joi.string().optional(),
-    userId: Joi.number()
   }).min(1).required()
 } 
 
