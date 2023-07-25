@@ -13,13 +13,13 @@ const userController = {
             const { pseudo, email, password, passwordConfirm } = req.body;
             const exists = await userDatamapper.getUserByEmail(email)
             if(exists) {
-                return res.json('message: email ou mot de passe incorrect');
+                return res.json('message: cet email existe déjà');
             }
             const salt = await bcrypt.genSalt(10);
             const passwordHash = await bcrypt.hash(password, salt);
             await userDatamapper.createUser(pseudo, email, passwordHash)
             // ! envoie de mail de confirmation
-            res.json('message: inscription réussie');
+            res.json('message: inscription réussie', {logged: true, pseudo: user.pseudo, userId:user.id});
     },
     async logIn (req, res){
             const {pseudo, email, password} = req.body

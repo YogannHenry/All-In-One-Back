@@ -37,7 +37,8 @@ const userDatamapper= {
     const query = ` UPDATE "user" SET
                         pseudo = COALESCE($1, pseudo),
                         email = COALESCE($2, email),
-                        password = COALESCE($3, password)
+                        password = COALESCE($3, password),
+                        updated_at = now()
                     WHERE id = $4
                     RETURNING *`
   const result = await pool.query(query, [pseudo, email, password, userId]);

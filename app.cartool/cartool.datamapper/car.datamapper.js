@@ -31,12 +31,22 @@ const carDatamapper= {
                         type = COALESCE($2, type),
                         current_km = COALESCE($3, current_km),
                         km_per_month = COALESCE($4, km_per_month),
-                        icon = COALESCE($5, icon)
+                        icon = COALESCE($5, icon),
+                        updated_at = now()
                     WHERE id = $6
                     RETURNING *`
   const result = await pool.query(query, [name, type, current_km, km_per_month, icon, carId]);
   return result.rows;
-    
+  },
+  async modifyKmOnCar (current_km, carId) {
+    console.log(current_km)
+    const query = ` UPDATE "car" SET
+                        current_km = COALESCE($1, current_km),
+                        updated_at = now()
+                    WHERE id = $2
+                    RETURNING *`
+  const result = await pool.query(query, [current_km, carId]);
+  return result.rows;
   }
 }
 
