@@ -11,8 +11,8 @@ INSERT INTO "wallet"("name", "userId") VALUES
 ('wallet 1', 1),
 ('wallet 2', 2);
 
--- INSERT INTO "document" ("name", "walletId") VALUES
--- ('doc1', 1),
--- ('doc2', 1);
+INSERT INTO "document" ("name", "walletId") VALUES
+('doc1', 1),
+('doc2', 1);
 
 COMMIT;

@@ -1,23 +1,25 @@
-const pool = require("../../database.connexion.js");
+/* eslint-disable max-len */
+/* eslint-disable camelcase */
 
-const maintenanceDatamapper= {
-    
-  async getAllMaintenance () {
-    const query = `SELECT * FROM "maintenance"`
+const pool = require('../../database.connexion');
+
+const maintenanceDatamapper = {
+  async getAllMaintenance() {
+    const query = 'SELECT * FROM "maintenance"';
     const result = await pool.query(query);
     return result.rows;
   },
-  async getAllMaintenanceByCarId (carId) {
-    const query = `SELECT * FROM "maintenance" WHERE "carId" = $1`
+  async getAllMaintenanceByCarId(carId) {
+    const query = 'SELECT * FROM "maintenance" WHERE "carId" = $1';
     const result = await pool.query(query, [carId]);
     return result.rows;
   },
-  async getOneMaintenance (maintenanceId) {
+  async getOneMaintenance(maintenanceId) {
     const query = 'SELECT * FROM "maintenance" WHERE id = $1';
     const result = await pool.query(query, [maintenanceId]);
     return result.rows;
   },
-  async createOneMaintenance (name, last_date_verif, last_km_verif, validity_period, validity_km, icon, carId) {
+  async createOneMaintenance(name, last_date_verif, last_km_verif, validity_period, validity_km, icon, carId) {
     const query = `INSERT INTO "maintenance"
                         ("name",
                         "last_date_verif",
@@ -47,14 +49,14 @@ const maintenanceDatamapper= {
                           updated_at = now()
                     WHERE id = $7
                     RETURNING *`;
-  const result = await pool.query(query, [name, last_date_verif, last_km_verif, validity_period, validity_km, icon, maintenanceId]);
-  return result.rows;
-  }, 
-  async deleteMaintenanceByCarId (listId) {
+    const result = await pool.query(query, [name, last_date_verif, last_km_verif, validity_period, validity_km, icon, maintenanceId]);
+    return result.rows;
+  },
+  async deleteMaintenanceByCarId(carId) {
     const query = 'DELETE FROM "maintenance" WHERE "carId" = $1';
     const result = await pool.query(query, [carId]);
     return result.rows;
-  }
-}
+  },
+};
 
-module.exports = maintenanceDatamapper
+module.exports = maintenanceDatamapper;

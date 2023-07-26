@@ -21,7 +21,7 @@ CREATE TABLE "maintenance" (
   "name" text NOT NULL,
   "last_date_verif" timestamptz,
   "last_km_verif" int,
-  "validity_period" timestamptz,
+  "validity_period" interval,
   "validity_km" int,
   "icon" text,
   "carId" int NOT NULL REFERENCES "car"("id"),

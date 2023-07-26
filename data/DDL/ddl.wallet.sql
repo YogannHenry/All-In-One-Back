@@ -18,6 +18,7 @@ CREATE TABLE "document"(
   "name" text,
   "information" text,
   "file" text,
+  "type" text,
   "icon" text,
   "walletId" int NOT NULL REFERENCES "wallet"("id"),
   "created_at" timestamptz NOT NULL DEFAULT now(),
