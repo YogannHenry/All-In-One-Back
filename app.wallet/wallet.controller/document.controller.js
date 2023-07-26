@@ -52,11 +52,15 @@ const documentController = {
     if (walletExisted.length === 0) {
       return res.status(404).json(`message: il n'existe aucun wallet avec l'id ${walletId}`);
     }
-    const file = req.file.filename;
-    const { name, information, icon } = req.body;
-    const oneDocument = await documentDatamapper
-      .createOneDocument(name, information, file, icon, walletId);
-    return res.json(oneDocument);
+    const { mimetype } = req.file;
+    if (mimetype === 'application/pdf' || mimetype.startsWith('image/')) {
+      const file = req.file.filename;
+      const { name, information, icon } = req.body;
+      const oneDocument = await documentDatamapper
+        .createOneDocument(name, information, file, icon, walletId);
+      return res.json(oneDocument);
+    }
+    return res.status(403).json('messsage: le fichier n\'est pas de type image ou pdf');
   },
 
   async deleteOneDocument(req, res) {
