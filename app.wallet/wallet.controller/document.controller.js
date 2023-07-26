@@ -4,15 +4,6 @@ const documentDatamapper = require('../wallet.datamapper/document.datamapper');
 const walletDatamapper = require('../wallet.datamapper/wallet.datamapper');
 
 const documentController = {
-<<<<<<< HEAD
-    async getAllDocument (req, res) {
-        const allDocument = await documentDatamapper.getAllDocument();
-        if (allDocument.length === 0) {
-            res.status(404).json(`message: il n'existe aucun document`)
-        }
-        res.json(allDocument);
-    },
-=======
   async getAllDocument(req, res) {
     const allDocument = await documentDatamapper.getAllDocument();
     if (allDocument.length === 0) {
@@ -49,7 +40,6 @@ const documentController = {
     if (fileName.length === 0) {
       return res.status(404).json({ error: `il n'existe aucun document avec l'id ${documentId}.` });
     }
->>>>>>> 739a40830bb43956fa1bfea7c5d24edf56afe627
 
     const filePath = path.join(__dirname, '..', '..', 'uploads', fileName[0].file);
     fs.access(filePath, fs.constants.F_OK, (err) => {
