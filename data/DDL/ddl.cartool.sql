@@ -10,7 +10,7 @@ CREATE TABLE "car" (
   "current_km" int,
   "km_per_month" int,
   "icon" text,
-  "userId" int NOT NULL REFERENCES "user"("id"),
+  "userId" int NOT NULL REFERENCES "user"("id") ON DELETE CASCADE,
   "created_at" timestamptz NOT NULL DEFAULT now(),
   "updated_at" timestamptz
   );
@@ -24,7 +24,7 @@ CREATE TABLE "maintenance" (
   "validity_period" interval,
   "validity_km" int,
   "icon" text,
-  "carId" int NOT NULL REFERENCES "car"("id"),
+  "carId" int NOT NULL REFERENCES "car"("id") ON DELETE CASCADE,
   "created_at" timestamptz NOT NULL DEFAULT now(),
   "updated_at" timestamptz
   );

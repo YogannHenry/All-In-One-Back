@@ -12,6 +12,7 @@ const documentSchema = {
     information: Joi.string().optional(),
     file: Joi.string().optional(),
     icon: Joi.string().pattern((/\b\w*Icon\b/)).optional(),
+    date: Joi.date().optional(),
   }).min(1).required(),
 
 };

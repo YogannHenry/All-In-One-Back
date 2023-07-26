@@ -1,13 +1,7 @@
 /* eslint-disable no-unused-vars */
-/* eslint-disable no-await-in-loop */
-/* eslint-disable no-restricted-syntax */
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const userDatamapper = require('./user.datamapper');
-const listDatamapper = require('../app.to-do-list/to-do-list.datamapper/list.datamapper');
-const taskDatamapper = require('../app.to-do-list/to-do-list.datamapper/task.datamapper');
-const walletDatamapper = require('../app.wallet/wallet.datamapper/wallet.datamapper');
-const documentDatamapper = require('../app.wallet/wallet.datamapper/document.datamapper');
 
 const userController = {
   async register(req, res) {
@@ -22,7 +16,7 @@ const userController = {
     const passwordHash = await bcrypt.hash(password, salt);
     const user = await userDatamapper.createUser(pseudo, email, passwordHash);
     // ! envoie de mail de confirmation
-    return res.json('message: inscription réussie', { logged: true, pseudo: user.pseudo, userId: user.id });
+    return res.status(200).json({ logged: true, pseudo: user.pseudo, userId: user.id });
   },
   async logIn(req, res) {
     const { pseudo, email, password } = req.body;
@@ -76,24 +70,6 @@ const userController = {
     if (!existedUser) {
       res.status(404).json("message: l'utilisateur n'existe pas");
     } else {
-      const listByUser = await listDatamapper.getListByUserId(userId);
-      const listIdArray = [];
-      for (const listId of listByUser) {
-        listIdArray.push(listId.id);
-      }
-      for (const listId of listIdArray) {
-        await taskDatamapper.deleteTaskByListId(listId);
-        await listDatamapper.deleteOneList(listId);
-      }
-      const walletByUser = await walletDatamapper.getWalletByUserId(userId);
-      const walletIdArray = [];
-      for (const walletId of walletByUser) {
-        walletIdArray.push(walletId.id);
-      }
-      for (const walletId of walletIdArray) {
-        await documentDatamapper.deleteDocumentByWalletId(walletId);
-        await walletDatamapper.deleteOneWallet(walletId);
-      }
       await userDatamapper.deleteOneUser(userId);
       res.json("message: l'utilisateur et toutes ses données ont été supprimées");
     }

@@ -21,7 +21,7 @@ const carDatamapper = {
   },
 
   async deleteOneCar(carId) {
-    const query = 'DELETE FROM "car" WHERE id = $1';
+    const query = 'DELETE FROM "car" WHERE id = $1 CASCADE';
     const result = await pool.query(query, [carId]);
     return result.rows;
   },
