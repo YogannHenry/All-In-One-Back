@@ -33,11 +33,15 @@ const documentController = {
     }
     res.json(oneDocument);
   },
+  // eslint-disable-next-line consistent-return
   async downloadOneDocument(req, res) {
     const { documentId } = req.params;
     const fileName = await documentDatamapper.getOneDocument(documentId);
-    const filePath = path.join(__dirname, '..', '..', 'uploads', fileName[0].file);
+    if (fileName.length === 0) {
+      return res.status(404).json({ error: `il n'existe aucun document avec l'id ${documentId}.` });
+    }
 
+    const filePath = path.join(__dirname, '..', '..', 'uploads', fileName[0].file);
     fs.access(filePath, fs.constants.F_OK, (err) => {
       if (err) {
         return res.status(404).json({ error: 'Le fichier demandé n\'existe pas.' });
