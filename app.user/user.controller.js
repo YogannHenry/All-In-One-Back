@@ -33,7 +33,7 @@ const userController = {
     const expiresIn = parseInt(process.env.JSON_WEB_TOKEN_EXPIRES_IN_SECONDS, 10) ?? 300;
     const token = jwt.sign(
       {
-        id: user.id,
+        userId: user.id,
         email: user.email,
         pseudo: user.pseudo,
         ip: req.ip,
