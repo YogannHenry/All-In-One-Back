@@ -36,18 +36,26 @@ const documentController = {
   // eslint-disable-next-line consistent-return
   async downloadOneDocument(req, res) {
     const { documentId } = req.params;
-    const fileName = await documentDatamapper.getOneDocument(documentId);
-    console.log(fileName);
-    if (fileName.length === 0) {
+    const existedDocument = await documentDatamapper.getOneDocument(documentId);
+    if (existedDocument.length === 0) {
+      console.log('erreur1');
       return res.status(404).json({ error: `il n'existe aucun document avec l'id ${documentId}.` });
     }
 
-    const filePath = path.join(__dirname, '..', '..', 'uploads', fileName[0].file);
+    const filePath = path.join(__dirname, '..', '..', 'uploads', existedDocument[0].file);
     fs.access(filePath, fs.constants.F_OK, (err) => {
       if (err) {
+        console.log('erreur2');
         return res.status(404).json({ error: 'Le fichier demandé n\'existe pas.' });
       }
-      return res.download(filePath);
+      return res.download(filePath, existedDocument[0].file, (downloadError) => {
+        // Gérer les erreurs potentielles liées au téléchargement
+        if (downloadError) {
+          console.error('Erreur lors du téléchargement du fichier :', downloadError);
+          return res.status(500).json({ error: 'Une erreur s\'est produite lors du téléchargement du fichier.' });
+        }
+        res.end();
+      });
     });
   },
 
@@ -63,10 +71,11 @@ const documentController = {
     const { mimetype } = req.file;
     if (mimetype === 'application/pdf' || mimetype.startsWith('image/')) {
       const file = req.file.filename;
-      const type = mimetype;
+      const type = mimetype.split('/').pop();
       const { name, information, icon } = req.body;
       const oneDocument = await documentDatamapper
         .createOneDocument(name, information, file, type, icon, walletId);
+
       return res.json(oneDocument);
     }
     return res.status(403).json('messsage: le fichier n\'est pas de type image ou pdf');
