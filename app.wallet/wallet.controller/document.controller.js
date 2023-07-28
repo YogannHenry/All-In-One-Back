@@ -37,6 +37,7 @@ const documentController = {
   async downloadOneDocument(req, res) {
     const { documentId } = req.params;
     const fileName = await documentDatamapper.getOneDocument(documentId);
+    console.log(fileName);
     if (fileName.length === 0) {
       return res.status(404).json({ error: `il n'existe aucun document avec l'id ${documentId}.` });
     }

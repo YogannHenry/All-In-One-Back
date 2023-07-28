@@ -10,7 +10,6 @@ const maintenanceSchema = {
     validity_period: Joi.string().custom(intervalValidator),
     validity_km: Joi.number().max(9000000).optional(),
     icon: Joi.string().pattern((/\b\w*Icon\b/)).optional(),
-    userId: Joi.number().required(),
   }),
   modifyMaintenanceSchema: Joi.object({
     name: Joi.string().max(30).optional(),
