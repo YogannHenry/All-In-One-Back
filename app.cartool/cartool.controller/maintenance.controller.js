@@ -35,7 +35,7 @@ const maintenanceController = {
       const lastKmRemaining = last_km_verif + validity_km - current_km;
 
       // calcul du temps restant avant entretien
-      const lastDate = dayjs();
+      const lastDate = dayjs(last_date_verif);
       const resultDate = lastDate
         .add(validity_period.years || 0, 'years')
         .add(validity_period.months || 0, 'months')

@@ -70,8 +70,8 @@ const documentController = {
     }
     const { mimetype } = req.file;
     if (mimetype === 'application/pdf' || mimetype.startsWith('image/')) {
+      const type = mimetype;
       const file = req.file.filename;
-      const type = mimetype.split('/').pop();
       const { name, information, icon } = req.body;
       const oneDocument = await documentDatamapper
         .createOneDocument(name, information, file, type, icon, walletId);
