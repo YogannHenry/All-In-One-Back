@@ -9,7 +9,6 @@ const maintenanceSchema = {
     last_km_verif: Joi.number().max(9000000).optional(),
     validity_period: Joi.string().custom(intervalValidator),
     validity_km: Joi.number().max(9000000).optional(),
-    icon: Joi.string().pattern((/\b\w*Icon\b/)).optional(),
   }),
   modifyMaintenanceSchema: Joi.object({
     name: Joi.string().max(30).optional(),
@@ -17,7 +16,6 @@ const maintenanceSchema = {
     last_km_verif: Joi.number().max(9000000).optional(),
     validity_period: Joi.string().custom(intervalValidator),
     validity_km: Joi.number().max(9000000).optional(),
-    icon: Joi.string().pattern((/\b\w*Icon\b/)).optional(),
   }).min(1).required(),
 };
 

@@ -20,14 +20,14 @@ const cartoolController = {
 
   async createOneCar(req, res) {
     const {
-      name, type, current_km, km_per_month, icon, userId,
+      name, type, current_km, km_per_month, userId,
     } = req.body;
     const existedUser = await userDatamapper.getUserById(userId);
     if (existedUser.length === 0) {
       return res.status(404).json(`message: il n'existe aucun user avec l'id ${userId}`);
     }
     const oneCar = await carDatamapper
-      .createOneCar(name, type, current_km, km_per_month, icon, userId);
+      .createOneCar(name, type, current_km, km_per_month, userId);
     return res.json(oneCar);
   },
 
@@ -48,10 +48,10 @@ const cartoolController = {
       return res.status(404).json(`message: il n'existe aucune voiture avec l'id ${carId}`);
     }
     const {
-      name, type, current_km, km_per_month, icon,
+      name, type, current_km, km_per_month,
     } = req.body;
     const updatedCar = await carDatamapper
-      .modifyOneCar(name, type, current_km, km_per_month, icon, carId);
+      .modifyOneCar(name, type, current_km, km_per_month, carId);
     return res.json(updatedCar);
   },
 };
