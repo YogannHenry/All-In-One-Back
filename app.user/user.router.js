@@ -17,11 +17,11 @@ router.post('/api/register', schemaValidator(userSchema.registerSchema), wrapper
 router.post('/api/login', schemaValidator(userSchema.loginSchema), wrapperController(userController.logIn));
 
 // route pour la déconnexion
-router.delete('/api/logout', wrapperController(userController.logOut));
+router.delete('/api/logout', JWTverification, wrapperController(userController.logOut));
 
 // routes pour supprimer ou modifier un utilisateur
-router.delete('/api/user/:userId', wrapperController(userController.deleteUser));
-router.put('/api/user/:userId', schemaValidator(userSchema.modifyUserSchema), wrapperController(userController.modifyUser));
+router.delete('/api/user/:userId', JWTverification, wrapperController(userController.deleteUser));
+router.put('/api/user/:userId', JWTverification, schemaValidator(userSchema.modifyUserSchema), wrapperController(userController.modifyUser));
 
 // routes pour récupérer les user
 router.get('/api/user/:id', wrapperController(userController.getUserById));

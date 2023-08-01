@@ -4,7 +4,8 @@ const userDatamapper = require('../../app.user/user.datamapper');
 
 const listController = {
   async getAllList(req, res) {
-    const allLists = await listDatamapper.getAllList();
+    const { userId } = req.user;
+    const allLists = await listDatamapper.getAllList(userId);
     if (allLists.length === 0) {
       return res.status(404).json('message: il n\'existe aucune liste');
     }

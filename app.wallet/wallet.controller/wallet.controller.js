@@ -4,7 +4,8 @@ const userDatamapper = require('../../app.user/user.datamapper');
 
 const walletController = {
   async getAllWallet(req, res) {
-    const allWallet = await walletDatamapper.getAllWallet();
+    const { userId } = req.user;
+    const allWallet = await walletDatamapper.getAllWallet(userId);
     if (allWallet.length === 0) {
       return res.status(404).json('message: il n\'existe aucun wallet');
     }

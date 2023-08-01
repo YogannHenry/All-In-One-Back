@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 const JWTverification = (req, res, next) => {
   try {
     const bearer = req.headers.authorization || '';
-    console.log('bearer', bearer, 'bearer');
+    console.log('bearer', bearer);
     if (!bearer) {
       return res.status(401).json({ message: 'Token manquant. Accès non autorisé.' });
     }

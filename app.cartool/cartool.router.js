@@ -15,18 +15,18 @@ const maintenanceController = require('./cartool.controller/maintenance.controll
 // Routes recuperation car
 
 router.get('/api/car', JWTverification, wrapperController(carController.getAllCar));
-router.get('/api/car/:carId', wrapperController(carController.getOneCar));
-router.post('/api/car', schemaValidator(carSchema.createCarSchema), wrapperController(carController.createOneCar));
-router.put('/api/car/:carId', schemaValidator(carSchema.modifyCarSchema), wrapperController(carController.modifyOneCar));
-router.delete('/api/car/:carId', wrapperController(carController.deleteOneCar));
+router.get('/api/car/:carId', JWTverification, wrapperController(carController.getOneCar));
+router.post('/api/car', JWTverification, schemaValidator(carSchema.createCarSchema), wrapperController(carController.createOneCar));
+router.put('/api/car/:carId', JWTverification, schemaValidator(carSchema.modifyCarSchema), wrapperController(carController.modifyOneCar));
+router.delete('/api/car/:carId', JWTverification, wrapperController(carController.deleteOneCar));
 
 // Routes recuperation taches
 
-router.get('/api/maintenance', wrapperController(maintenanceController.getAllMaintenance));
-router.get('/api/car/:carId/maintenance', wrapperController(maintenanceController.getAllMaintenanceByCarId));
-router.get('/api/car/maintenance/:maintenanceId', wrapperController(maintenanceController.getOneMaintenance));
-router.post('/api/car/:carId/maintenance', schemaValidator(maintenanceSchema.createMaintenanceSchema), wrapperController(maintenanceController.createOneMaintenance));
-router.put('/api/car/maintenance/:maintenanceId', wrapperController(maintenanceController.modifyOneMaintenance));
-router.delete('/api/car/maintenance/:maintenanceId', wrapperController(maintenanceController.deleteOneMaintenance));
+router.get('/api/maintenance', JWTverification, wrapperController(maintenanceController.getAllMaintenance));
+router.get('/api/car/:carId/maintenance', JWTverification, wrapperController(maintenanceController.getAllMaintenanceByCarId));
+router.get('/api/car/maintenance/:maintenanceId', JWTverification, wrapperController(maintenanceController.getOneMaintenance));
+router.post('/api/car/:carId/maintenance', JWTverification, schemaValidator(maintenanceSchema.createMaintenanceSchema), wrapperController(maintenanceController.createOneMaintenance));
+router.put('/api/car/maintenance/:maintenanceId', JWTverification, wrapperController(maintenanceController.modifyOneMaintenance));
+router.delete('/api/car/maintenance/:maintenanceId', JWTverification, wrapperController(maintenanceController.deleteOneMaintenance));
 
 module.exports = router;

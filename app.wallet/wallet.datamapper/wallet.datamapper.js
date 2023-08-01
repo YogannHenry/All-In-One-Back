@@ -1,9 +1,9 @@
 const pool = require('../../database.connexion');
 
 const walletDatamapper = {
-  async getAllWallet() {
-    const query = 'SELECT * FROM "wallet"';
-    const result = await pool.query(query);
+  async getAllWallet(userId) {
+    const query = 'SELECT * FROM "wallet" WHERE "userId"= $1';
+    const result = await pool.query(query, userId);
     return result.rows;
   },
 
