@@ -18,17 +18,17 @@ const maintenanceController = {
     const { carId } = req.params;
     const car = await carDatamapper.getOneCar(carId);
     if (car.length === 0) {
-      res.status(404).json(`message: il n'existe aucune voiture avec l'id ${carId} `);
+      return res.status(404).json(`message: il n'existe aucune voiture avec l'id ${carId} `);
     }
     const allMaintenance = await maintenanceDatamapper.getAllMaintenanceByCarId(carId);
     if (allMaintenance.length === 0) {
-      res.status(404).json(`message: il n'existe aucun entretien pour la voiture avec l'id ${carId} `);
+      return res.status(404).json(`message: il n'existe aucun entretien pour la voiture avec l'id ${carId} `);
     }
     const { current_km, km_per_month } = car[0];
     const allMaintenanceCalcul = [];
     for (const oneMaintenance of allMaintenance) {
       const {
-        last_date_verif, last_km_verif, validity_period, validity_km,
+        last_date_verif, validity_period, validity_km,
       } = oneMaintenance;
       const lastDate = dayjs(last_date_verif);
 
@@ -37,7 +37,6 @@ const maintenanceController = {
 
       // calcul du temps restant avant entretien en fonction des km par mois
       const periodPerMonth = Math.abs((current_km - lastKmRemaining) / km_per_month, 10);
-      console.log(periodPerMonth);
       const dateKmPerMonth = lastDate.add(periodPerMonth, 'months').toISOString();
 
       // calcul du temps restant avant entretien en fonction de la date de validité d'un entretien
@@ -49,41 +48,10 @@ const maintenanceController = {
       const oneMaintenanceCalcul = {
         ...oneMaintenance, lastKmRemaining, lastTimeRemaining, dateKmPerMonth,
       };
-      console.log(oneMaintenanceCalcul);
       allMaintenanceCalcul.push(oneMaintenanceCalcul);
     }
 
-    res.json(allMaintenanceCalcul);
-  },
-
-  async getOneMaintenance(req, res) {
-    const { maintenanceId } = req.params;
-    const oneMaintenance = await maintenanceDatamapper.getOneMaintenance(maintenanceId);
-    const oneCar = await carDatamapper.getOneCar(oneMaintenance[0].carId);
-    const { current_km } = oneCar[0];
-    if (oneMaintenance.length === 0) {
-      res.status(404).json(`message: il n'existe aucun entretien avec l'id ${maintenanceId} `);
-    }
-    const {
-      last_date_verif, last_km_verif, validity_period, validity_km,
-    } = oneMaintenance[0];
-
-    // calcul des km restant avant entretien
-    const lastKmRemaining = last_km_verif + validity_km - current_km;
-
-    // calcul du temps restant avant entretien
-    const now = dayjs();
-    const lastDate = dayjs(last_date_verif);
-    const resultDate = lastDate
-      .add(validity_period.years || 0, 'years')
-      .add(validity_period.months || 0, 'months')
-      .add(validity_period.days || 0, 'days');
-    const lastTimeRemaining = resultDate.fromNow();
-    console.log('coucou');
-    console.log(lastTimeRemaining);
-
-    const oneMaintenanceCalcul = { ...oneMaintenance[0], lastKmRemaining, lastTimeRemaining };
-    res.json(oneMaintenanceCalcul);
+    return res.json(allMaintenanceCalcul);
   },
 
   async createOneMaintenance(req, res) {
@@ -98,9 +66,9 @@ const maintenanceController = {
     if (current_km < last_km_verif) {
       current_km = last_km_verif;
       await carDatamapper.modifyKmOnCar(current_km, carId);
-      res.json({ oneMaintenance, message: 'nous avons aussi mis à jour les km de la voiture' });
+      return res.json({ oneMaintenance, message: 'nous avons aussi mis à jour les km de la voiture' });
     }
-    res.json(oneMaintenance);
+    return res.json(oneMaintenance);
   },
 
   async deleteOneMaintenance(req, res) {
@@ -117,23 +85,22 @@ const maintenanceController = {
     const { maintenanceId } = req.params;
     const maintenanceExisted = await maintenanceDatamapper.getOneMaintenance(maintenanceId);
     if (maintenanceExisted.length === 0) {
-      res.status(404).json(`message: il n'existe aucun entretien avec l'id ${maintenanceId} `);
-    } else {
-      const {
-        name, last_date_verif, last_km_verif, validity_period, validity_km, icon,
-      } = req.body;
-      const { carId } = maintenanceExisted[0];
-      const oneCar = await carDatamapper.getOneCar(carId);
-      let { current_km } = oneCar[0];
-      if (current_km < last_km_verif) {
-        current_km = last_km_verif;
-        await carDatamapper.modifyKmOnCar(current_km, carId);
-        res.json({ maintenanceExisted, message: 'nous avons aussi mis à jour les km de la voiture' });
-      }
-      const modifiedMaintenance = await maintenanceDatamapper
-        .modifyOneMaintenance(name, last_date_verif, last_km_verif, validity_period, validity_km, icon, maintenanceId);
-      res.json(modifiedMaintenance);
+      return res.status(404).json(`message: il n'existe aucun entretien avec l'id ${maintenanceId} `);
     }
+    const {
+      name, last_date_verif, last_km_verif, validity_period, validity_km, icon,
+    } = req.body;
+    const { carId } = maintenanceExisted[0];
+    const oneCar = await carDatamapper.getOneCar(carId);
+    let { current_km } = oneCar[0];
+    if (current_km < last_km_verif) {
+      current_km = last_km_verif;
+      await carDatamapper.modifyKmOnCar(current_km, carId);
+      return res.json({ maintenanceExisted, message: 'nous avons aussi mis à jour les km de la voiture' });
+    }
+    const modifiedMaintenance = await maintenanceDatamapper
+      .modifyOneMaintenance(name, last_date_verif, last_km_verif, validity_period, validity_km, icon, maintenanceId);
+    return res.json(modifiedMaintenance);
   },
 };
 

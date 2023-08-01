@@ -7,54 +7,51 @@ const documentController = {
   async getAllDocument(req, res) {
     const allDocument = await documentDatamapper.getAllDocument();
     if (allDocument.length === 0) {
-      res.status(404).json('message: il n\'existe aucun document');
+      return res.status(404).json('message: il n\'existe aucun document');
     }
-    res.json(allDocument);
+    return res.json(allDocument);
   },
 
   async getAllDocumentByWalletId(req, res) {
     const { walletId } = req.params;
     const wallet = await walletDatamapper.getOneWallet(walletId);
     if (wallet.length === 0) {
-      res.status(404).json(`message: il n'existe aucun portefeuille avec l'id ${walletId} `);
+      return res.status(404).json(`message: il n'existe aucun portefeuille avec l'id ${walletId} `);
     }
     const allDocument = await documentDatamapper.getAllDocumentByWalletId(walletId);
     if (allDocument.length === 0) {
-      res.status(404).json(`message: il n'existe aucun document pour le wallet ${walletId}`);
+      return res.status(404).json(`message: il n'existe aucun document pour le wallet ${walletId}`);
     }
-    res.json(allDocument);
+    return res.json(allDocument);
   },
 
   async getOneDocument(req, res) {
     const { documentId } = req.params;
     const oneDocument = await documentDatamapper.getOneDocument(documentId);
     if (oneDocument.length === 0) {
-      res.status(404).json(`message: il n'existe aucun document avec l'id ${documentId}`);
+      return res.status(404).json(`message: il n'existe aucun document avec l'id ${documentId}`);
     }
-    res.json(oneDocument);
+    return res.json(oneDocument);
   },
   // eslint-disable-next-line consistent-return
   async downloadOneDocument(req, res) {
     const { documentId } = req.params;
     const existedDocument = await documentDatamapper.getOneDocument(documentId);
     if (existedDocument.length === 0) {
-      console.log('erreur1');
       return res.status(404).json({ error: `il n'existe aucun document avec l'id ${documentId}.` });
     }
 
     const filePath = path.join(__dirname, '..', '..', 'uploads', existedDocument[0].file);
     fs.access(filePath, fs.constants.F_OK, (err) => {
       if (err) {
-        console.log('erreur2');
         return res.status(404).json({ error: 'Le fichier demandé n\'existe pas.' });
       }
+      // eslint-disable-next-line consistent-return
       return res.download(filePath, existedDocument[0].file, (downloadError) => {
         // Gérer les erreurs potentielles liées au téléchargement
         if (downloadError) {
-          console.error('Erreur lors du téléchargement du fichier :', downloadError);
           return res.status(500).json({ error: 'Une erreur s\'est produite lors du téléchargement du fichier.' });
         }
-        res.end();
       });
     });
   },
@@ -85,26 +82,24 @@ const documentController = {
     const { documentId } = req.params;
     const existedDocument = await documentDatamapper.getOneDocument(documentId);
     if (existedDocument.length === 0) {
-      res.status(404).json(`message: il n'existe aucun document avec l'id ${documentId}`);
-    } else {
-      await documentDatamapper.deleteOneDocument(documentId);
-      res.json(`message: le document ${documentId} a été supprimé avec succès`);
+      return res.status(404).json(`message: il n'existe aucun document avec l'id ${documentId}`);
     }
+    await documentDatamapper.deleteOneDocument(documentId);
+    return res.json(`message: le document ${documentId} a été supprimé avec succès`);
   },
 
   async modifyOneDocument(req, res) {
     const { documentId } = req.params;
     const existedDocument = await documentDatamapper.getOneDocument(documentId);
     if (existedDocument.length === 0) {
-      res.status(404).json(`message: il n'existe aucun document avec l'id ${documentId}`);
-    } else {
-      const {
-        name, information, file, icon,
-      } = req.body;
-      const updatedDocument = await documentDatamapper
-        .modifyOneDocument(name, information, file, icon, documentId);
-      res.json(updatedDocument);
+      return res.status(404).json(`message: il n'existe aucun document avec l'id ${documentId}`);
     }
+    const {
+      name, information, file, icon,
+    } = req.body;
+    const updatedDocument = await documentDatamapper
+      .modifyOneDocument(name, information, file, icon, documentId);
+    return res.json(updatedDocument);
   },
 };
 

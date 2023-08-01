@@ -22,12 +22,12 @@ const userController = {
     const { pseudo, email, password } = req.body;
     const user = await userDatamapper.getUserByEmail(email);
     if (!user) {
-      res.json('message: email ou mot de passe incorrect');
+      return res.json('message: email ou mot de passe incorrect');
     }
     const passwordIsValid = await bcrypt.compare(password, user.password);
 
     if (!passwordIsValid) {
-      res.json('message: email ou mot de passe incorrect');
+      return res.json('message: email ou mot de passe incorrect');
     }
 
     const expiresIn = parseInt(process.env.JSON_WEB_TOKEN_EXPIRES_IN_SECONDS, 10) ?? 300;
@@ -47,7 +47,7 @@ const userController = {
     const expireAt = time + expiresIn;
 
     res.expireAt = expireAt;
-    res.json({
+    return res.json({
       token: `Bearer ${token}`, logged: true, pseudo: user.pseudo, userId: user.id,
     });
   },
@@ -57,40 +57,38 @@ const userController = {
   },
   async getAllUser(req, res) {
     const user = await userDatamapper.getAllUser();
-    res.json(user);
+    return res.json(user);
   },
   async getUserById(req, res) {
     const { id } = req.params;
     const user = await userDatamapper.getUserById(id);
-    res.json(user);
+    return res.json(user);
   },
   async deleteUser(req, res) {
     const { userId } = req.params;
     const existedUser = await userDatamapper.getUserById(userId);
     if (!existedUser) {
-      res.status(404).json("message: l'utilisateur n'existe pas");
-    } else {
-      await userDatamapper.deleteOneUser(userId);
-      res.json("message: l'utilisateur et toutes ses données ont été supprimées");
+      return res.status(404).json("message: l'utilisateur n'existe pas");
     }
+    await userDatamapper.deleteOneUser(userId);
+    return res.json("message: l'utilisateur et toutes ses données ont été supprimées");
   },
   async modifyUser(req, res) {
     const { userId } = req.params;
     const existedUser = await userDatamapper.getUserById(userId);
     let passwordHash = null;
     if (!existedUser) {
-      res.status(404).json("message: l'utilisateur n'existe pas");
-    } else {
-      const {
-        pseudo, email, password,
-      } = req.body;
-      if (password) {
-        const salt = await bcrypt.genSalt(10);
-        passwordHash = await bcrypt.hash(password, salt);
-      }
-      const updatedUser = await userDatamapper.modifyOneUser(pseudo, email, passwordHash, userId);
-      res.json(updatedUser);
+      return res.status(404).json("message: l'utilisateur n'existe pas");
     }
+    const {
+      pseudo, email, password,
+    } = req.body;
+    if (password) {
+      const salt = await bcrypt.genSalt(10);
+      passwordHash = await bcrypt.hash(password, salt);
+    }
+    const updatedUser = await userDatamapper.modifyOneUser(pseudo, email, passwordHash, userId);
+    return res.json(updatedUser);
   },
 };
 

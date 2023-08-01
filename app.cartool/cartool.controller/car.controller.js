@@ -12,9 +12,9 @@ const cartoolController = {
     const { carId } = req.params;
     const oneCar = await carDatamapper.getOneCar(carId);
     if (oneCar.length === 0) {
-      res.status(404).json(`message: il n'existe aucune voiture avec l'id ${carId}`);
+      return res.status(404).json(`message: il n'existe aucune voiture avec l'id ${carId}`);
     }
-    res.json(oneCar);
+    return res.json(oneCar);
   },
 
   async createOneCar(req, res) {
@@ -23,37 +23,35 @@ const cartoolController = {
     } = req.body;
     const existedUser = await userDatamapper.getUserById(userId);
     if (existedUser.length === 0) {
-      res.status(404).json(`message: il n'existe aucun user avec l'id ${userId}`);
+      return res.status(404).json(`message: il n'existe aucun user avec l'id ${userId}`);
     }
     const oneCar = await carDatamapper
       .createOneCar(name, type, current_km, km_per_month, icon, userId);
-    res.json(oneCar);
+    return res.json(oneCar);
   },
 
   async deleteOneCar(req, res) {
     const { carId } = req.params;
     const existedCar = await carDatamapper.getOneCar(carId);
     if (existedCar.length === 0) {
-      res.status(404).json(`message: il n'existe aucune voiture avec l'id ${carId}`);
-    } else {
-      await carDatamapper.deleteOneCar(carId);
-      res.json(`message: la voiture avec l'id ${carId} a été supprimée avec succès`);
+      return res.status(404).json(`message: il n'existe aucune voiture avec l'id ${carId}`);
     }
+    await carDatamapper.deleteOneCar(carId);
+    return res.json(`message: la voiture avec l'id ${carId} a été supprimée avec succès`);
   },
 
   async modifyOneCar(req, res) {
     const { carId } = req.params;
     const existedCar = await carDatamapper.getOneCar(carId);
     if (existedCar.length === 0) {
-      res.status(404).json(`message: il n'existe aucune voiture avec l'id ${carId}`);
-    } else {
-      const {
-        name, type, current_km, km_per_month, icon,
-      } = req.body;
-      const updatedCar = await carDatamapper
-        .modifyOneCar(name, type, current_km, km_per_month, icon, carId);
-      res.json(updatedCar);
+      return res.status(404).json(`message: il n'existe aucune voiture avec l'id ${carId}`);
     }
+    const {
+      name, type, current_km, km_per_month, icon,
+    } = req.body;
+    const updatedCar = await carDatamapper
+      .modifyOneCar(name, type, current_km, km_per_month, icon, carId);
+    return res.json(updatedCar);
   },
 };
 

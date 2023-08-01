@@ -1,5 +1,4 @@
 const express = require('express');
-const multer = require('multer');
 const multerUpload = require('../../app.middleware/multer.config');
 
 const wrapperController = require('../../app.middleware/wrapper.controller');

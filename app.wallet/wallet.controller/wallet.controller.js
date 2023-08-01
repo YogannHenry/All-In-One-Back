@@ -6,51 +6,49 @@ const walletController = {
   async getAllWallet(req, res) {
     const allWallet = await walletDatamapper.getAllWallet();
     if (allWallet.length === 0) {
-      res.status(404).json('message: il n\'existe aucun wallet');
+      return res.status(404).json('message: il n\'existe aucun wallet');
     }
-    res.json(allWallet);
+    return res.json(allWallet);
   },
 
   async getOneWallet(req, res) {
     const { walletId } = req.params;
     const oneWallet = await walletDatamapper.getOneWallet(walletId);
     if (oneWallet.length === 0) {
-      res.status(404).json(`message: il n'existe aucun wallet avec l'id ${walletId}`);
+      return res.status(404).json(`message: il n'existe aucun wallet avec l'id ${walletId}`);
     }
-    res.json(oneWallet);
+    return res.json(oneWallet);
   },
 
   async createOneWallet(req, res) {
     const { name, icon, userId } = req.body;
     const existedUser = await userDatamapper.getUserById(userId);
     if (existedUser.length === 0) {
-      res.status(404).json(`message: il n'existe aucun user avec l'id ${userId}`);
+      return res.status(404).json(`message: il n'existe aucun user avec l'id ${userId}`);
     }
     const oneWallet = await walletDatamapper.createOneWallet(name, icon, userId);
-    res.json(oneWallet);
+    return res.json(oneWallet);
   },
 
   async deleteOneWallet(req, res) {
     const { walletId } = req.params;
     const walletExisted = await walletDatamapper.getOneWallet(walletId);
     if (walletExisted.length === 0) {
-      res.status(404).json(`message: il n'existe aucun wallet avec l'id ${walletId}`);
-    } else {
-      await documentDatamapper.deleteDocumentByWalletId(walletId);
-      await walletDatamapper.deleteOneWallet(walletId);
-      res.json(`message: le wallet ${walletId} a été supprimée avec succès`);
+      return res.status(404).json(`message: il n'existe aucun wallet avec l'id ${walletId}`);
     }
+    await documentDatamapper.deleteDocumentByWalletId(walletId);
+    await walletDatamapper.deleteOneWallet(walletId);
+    return res.json(`message: le wallet ${walletId} a été supprimée avec succès`);
   },
   async modifyOneWallet(req, res) {
     const { walletId } = req.params;
     const walletExisted = await walletDatamapper.getOneWallet(walletId);
     if (walletExisted.length === 0) {
-      res.status(404).json(`message: il n'existe aucun wallet avec l'id ${walletId}`);
-    } else {
-      const { name, icon } = req.body;
-      const updatedWallet = await walletDatamapper.modifyOneWallet(name, icon, walletId);
-      res.json(updatedWallet);
+      return res.status(404).json(`message: il n'existe aucun wallet avec l'id ${walletId}`);
     }
+    const { name, icon } = req.body;
+    const updatedWallet = await walletDatamapper.modifyOneWallet(name, icon, walletId);
+    return res.json(updatedWallet);
   },
 };
 
