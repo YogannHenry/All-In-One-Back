@@ -30,15 +30,17 @@ const maintenanceController = {
       const {
         last_date_verif, last_km_verif, validity_period, validity_km,
       } = oneMaintenance;
+      const lastDate = dayjs(last_date_verif);
 
       // calcul des km restants avant le prochain entretien en valeur absolue
       const lastKmRemaining = current_km + validity_km;
 
       // calcul du temps restant avant entretien en fonction des km par mois
-      const dateKmPerMonth = Math.abs((current_km - lastKmRemaining) / km_per_month, 10);
+      const periodPerMonth = Math.abs((current_km - lastKmRemaining) / km_per_month, 10);
+      console.log(periodPerMonth);
+      const dateKmPerMonth = lastDate.add(periodPerMonth, 'months').toISOString();
 
       // calcul du temps restant avant entretien en fonction de la date de validité d'un entretien
-      const lastDate = dayjs(last_date_verif);
       const resultDate = lastDate
         .add(validity_period.years || 0, 'years')
         .add(validity_period.months || 0, 'months')
@@ -70,12 +72,15 @@ const maintenanceController = {
     const lastKmRemaining = last_km_verif + validity_km - current_km;
 
     // calcul du temps restant avant entretien
+    const now = dayjs();
     const lastDate = dayjs(last_date_verif);
     const resultDate = lastDate
       .add(validity_period.years || 0, 'years')
       .add(validity_period.months || 0, 'months')
       .add(validity_period.days || 0, 'days');
-    const lastTimeRemaining = resultDate.toISOString();
+    const lastTimeRemaining = resultDate.fromNow();
+    console.log('coucou');
+    console.log(lastTimeRemaining);
 
     const oneMaintenanceCalcul = { ...oneMaintenance[0], lastKmRemaining, lastTimeRemaining };
     res.json(oneMaintenanceCalcul);
