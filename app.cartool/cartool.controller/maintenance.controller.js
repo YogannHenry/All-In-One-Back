@@ -24,24 +24,30 @@ const maintenanceController = {
     if (allMaintenance.length === 0) {
       res.status(404).json(`message: il n'existe aucun entretien pour la voiture avec l'id ${carId} `);
     }
-    const { current_km } = car[0];
+    const { current_km, km_per_month } = car[0];
     const allMaintenanceCalcul = [];
     for (const oneMaintenance of allMaintenance) {
       const {
         last_date_verif, last_km_verif, validity_period, validity_km,
       } = oneMaintenance;
 
-      // calcul des km restants
-      const lastKmRemaining = last_km_verif + validity_km - current_km;
+      // calcul des km restants avant le prochain entretien en valeur absolue
+      const lastKmRemaining = current_km + validity_km;
 
-      // calcul du temps restant avant entretien
+      // calcul du temps restant avant entretien en fonction des km par mois
+      const dateKmPerMonth = Math.abs((current_km - lastKmRemaining) / km_per_month, 10);
+
+      // calcul du temps restant avant entretien en fonction de la date de validité d'un entretien
       const lastDate = dayjs(last_date_verif);
       const resultDate = lastDate
         .add(validity_period.years || 0, 'years')
         .add(validity_period.months || 0, 'months')
         .add(validity_period.days || 0, 'days');
       const lastTimeRemaining = resultDate.toISOString();
-      const oneMaintenanceCalcul = { ...oneMaintenance, lastKmRemaining, lastTimeRemaining };
+      const oneMaintenanceCalcul = {
+        ...oneMaintenance, lastKmRemaining, lastTimeRemaining, dateKmPerMonth,
+      };
+      console.log(oneMaintenanceCalcul);
       allMaintenanceCalcul.push(oneMaintenanceCalcul);
     }
 
@@ -96,11 +102,10 @@ const maintenanceController = {
     const { maintenanceId } = req.params;
     const maintenanceExisted = await maintenanceDatamapper.getOneMaintenance(maintenanceId);
     if (maintenanceExisted.length === 0) {
-      res.status(404).json(`message: il n'existe aucun entretien avec l'id ${maintenanceId} `);
-    } else {
-      await maintenanceDatamapper.deleteOneMaintenance(maintenanceId);
-      res.json(`message: l'entretien avec l'id ${maintenanceId} a été supprimé avec succès`);
+      return res.status(404).json(`message: il n'existe aucun entretien avec l'id ${maintenanceId} `);
     }
+    await maintenanceDatamapper.deleteOneMaintenance(maintenanceId);
+    return res.json(`message: l'entretien avec l'id ${maintenanceId} a été supprimé avec succès`);
   },
 
   async modifyOneMaintenance(req, res) {

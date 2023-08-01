@@ -2,8 +2,6 @@ const express = require('express');
 const multer = require('multer');
 const multerUpload = require('../../app.middleware/multer.config');
 
-const upload = multer({ dest: '../All-In-One-Front/uploads/' });
-
 const wrapperController = require('../../app.middleware/wrapper.controller');
 const walletController = require('../wallet.controller/wallet.controller');
 const documentController = require('../wallet.controller/document.controller');

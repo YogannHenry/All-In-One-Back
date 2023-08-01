@@ -5,9 +5,6 @@ const userDatamapper = require('../../app.user/user.datamapper');
 const cartoolController = {
   async getAllCar(req, res) {
     const allCar = await carDatamapper.getAllCar();
-    // if (allCar.length === 0) {
-    //   res.status(404).json('message: il n\'existe aucune voiture');
-    // }
     res.json(allCar);
   },
 
