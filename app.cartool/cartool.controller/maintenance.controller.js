@@ -56,11 +56,16 @@ const maintenanceController = {
 
   async createOneMaintenance(req, res) {
     const { carId } = req.params;
+    console.log(carId);
     const {
-      name, last_date_verif, last_km_verif, validity_period, validity_km, icon,
+      name, last_date_verif, last_km_verif, validity_period, validity_km,
     } = req.body;
+    console.log('controller', carId);
+
     const oneMaintenance = await maintenanceDatamapper
-      .createOneMaintenance(name, last_date_verif, last_km_verif, validity_period, validity_km, icon, carId);
+      .createOneMaintenance(name, last_date_verif, last_km_verif, validity_period, validity_km, carId);
+
+    console.log(oneMaintenance);
     const oneCar = await carDatamapper.getOneCar(oneMaintenance[0].carId);
     let { current_km } = oneCar[0];
     if (current_km < last_km_verif) {

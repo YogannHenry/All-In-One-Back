@@ -5,6 +5,7 @@ const carDatamapper = {
   async getAllCar(userId) {
     const query = 'SELECT * FROM "car" WHERE "userId"=$1';
     const result = await pool.query(query, [userId]);
+    console.log('result', result);
     return result.rows;
   },
   async getOneCar(id) {

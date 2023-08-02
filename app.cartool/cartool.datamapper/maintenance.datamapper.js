@@ -20,6 +20,7 @@ const maintenanceDatamapper = {
     return result.rows;
   },
   async createOneMaintenance(name, last_date_verif, last_km_verif, validity_period, validity_km, carId) {
+    console.log('datamapper', carId);
     const query = `INSERT INTO "maintenance"
                         ("name",
                         "last_date_verif",
@@ -30,6 +31,7 @@ const maintenanceDatamapper = {
                   VALUES ($1, $2, $3, $4, $5, $6) 
                   RETURNING *`;
     const result = await pool.query(query, [name, last_date_verif, last_km_verif, validity_period, validity_km, carId]);
+    console.log(result.rows);
     return result.rows;
   },
   async deleteOneMaintenance(maintenanceId) {
