@@ -57,8 +57,12 @@ const maintenanceController = {
   async createOneMaintenance(req, res) {
     const { carId } = req.params;
     const {
-      name, last_date_verif, last_km_verif, validity_period, validity_km,
+      name, last_km_verif, validity_period, validity_km,
     } = req.body;
+
+    let { last_date_verif } = req.body;
+    const dateObject = dayjs(last_date_verif, 'DD/MM/YYYY').toDate();
+    last_date_verif = dateObject.toISOString();
     const oneMaintenance = await maintenanceDatamapper
       .createOneMaintenance(name, last_date_verif, last_km_verif, validity_period, validity_km, carId);
     const oneCar = await carDatamapper.getOneCar(oneMaintenance[0].carId);

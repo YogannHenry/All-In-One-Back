@@ -5,7 +5,6 @@ const userDatamapper = require('../../app.user/user.datamapper');
 const cartoolController = {
   async getAllCar(req, res) {
     const { userId } = req.user;
-    console.log(userId);
     const allCar = await carDatamapper.getAllCar(userId);
     res.json(allCar);
   },
