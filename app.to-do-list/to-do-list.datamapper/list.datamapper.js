@@ -3,7 +3,7 @@ const pool = require('../../database.connexion.js');
 
 const listDatamapper = {
   async getAllList(userId) {
-    const query = 'SELECT * FROM "list" WHERE userId=$1';
+    const query = 'SELECT * FROM "list" WHERE "userId"=$1';
     const result = await pool.query(query, [userId]);
     return result.rows;
   },
