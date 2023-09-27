@@ -2,13 +2,13 @@ const Joi = require('joi');
 
 const taskSchema = {
   createTaskSchema: Joi.object({
-    name: Joi.string().max(30).required(),
+    name: Joi.string().max(300).required(),
     position: Joi.number().optional(),
     status: Joi.boolean().optional(),
     userId: Joi.number().optional(),
   }),
   modifyTaskSchema: Joi.object({
-    name: Joi.string().max(30).optional(),
+    name: Joi.string().max(300).optional(),
     position: Joi.number().optional(),
     status: Joi.boolean().optional(),
     userId: Joi.number().optional(),

@@ -16,7 +16,7 @@ const userController = {
     const passwordHash = await bcrypt.hash(password, salt);
     const user = await userDatamapper.createUser(pseudo, email, passwordHash);
     // ! envoie de mail de confirmation
-    return res.status(200).json({ logged: true, pseudo: user.pseudo, userId: user.id });
+    return res.status(200).json({ registered: true, pseudo: user.pseudo, userId: user.id });
   },
   async logIn(req, res) {
     const { pseudo, email, password } = req.body;
