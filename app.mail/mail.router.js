@@ -2,8 +2,10 @@ const express = require('express');
 
 const router = express.Router();
 
-const contactController = require('./mail.controller');
+const mailController = require('./mail.controller');
 
-router.post('/api/contact', contactController.sendContactEmail);
+router.post('/api/contact', mailController.sendContactEmail);
+
+router.post('/api/emailRegisterConfirmation', mailController.sendConfirmationInscriptionEmail);
 
 module.exports = router;
