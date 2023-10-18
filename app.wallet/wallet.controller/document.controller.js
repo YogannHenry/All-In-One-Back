@@ -41,7 +41,7 @@ const documentController = {
       return res.status(404).json({ error: `il n'existe aucun document avec l'id ${documentId}.` });
     }
 
-    const filePath = path.join(__dirname, '../../../All-In-One-Front/uploads', existedDocument[0].file);
+    const filePath = path.join(__dirname, '../../../all-in-1.fr/uploads/', existedDocument[0].file);
     fs.access(filePath, fs.constants.F_OK, (err) => {
       if (err) {
         return res.status(404).json({ error: 'Le fichier demandé n\'existe pas.' });
