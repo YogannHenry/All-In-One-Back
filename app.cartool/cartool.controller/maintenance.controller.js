@@ -31,23 +31,27 @@ const maintenanceController = {
 
       // Calcul du nombre total de kilomètres parcourus depuis la dernière vérification
       const km_since_last_verif = current_km - last_km_verif;
-
       // Calcul du nombre de mois écoulés depuis la dernière vérification d'entretien
-      const lastDateVerif = new Date(last_date_verif);
-      const currentDate = new Date();
-      const months_since_last_verif = Math.floor((currentDate - lastDateVerif) / (30 * 24 * 60 * 60 * 1000));
-      // eslint-disable-next-line no-console
-      console.log('months_since_last_verif', months_since_last_verif);
+      const lastDateVerif = dayjs(last_date_verif);
+
+      const currentDate = dayjs();
+
+      const days_since_last_verif = Math.floor((currentDate - lastDateVerif) / (24 * 60 * 60 * 1000));
 
       // Calcul du nombre total de kilomètres attendus depuis la dernière vérification
-      const expected_km_since_last_verif = months_since_last_verif * km_per_month;
+      const daysPerMonth = 30;
+      const km_per_day_driven = Math.ceil(km_per_month / daysPerMonth);
+
+      const expected_km_since_last_verif = days_since_last_verif * km_per_day_driven;
 
       // Calcul des kilomètres restants avant le prochain entretien
       const lastKmRemaining = validity_km - (km_since_last_verif + expected_km_since_last_verif);
 
+      const number_of_days_before_next_verif = Math.ceil(lastKmRemaining / km_per_day_driven);
       // Calcul des jours restants avant le prochain entretien
-      const daysPerMonth = 30;
-      const lastTimeRemaining = Math.ceil((validity_km - km_since_last_verif) / (km_per_month * daysPerMonth));
+
+      const date_next_maintenance = currentDate.add(number_of_days_before_next_verif, 'day');
+      const formattedDateNextMaintenance = date_next_maintenance.format('DD-MM-YYYY');
 
       // Ajout des résultats au tableau allMaintenanceCalcul
       allMaintenanceCalcul.push({
@@ -56,7 +60,8 @@ const maintenanceController = {
         last_km_verif,
         validity_km,
         lastKmRemaining,
-        lastTimeRemaining,
+        formattedDateNextMaintenance,
+        number_of_days_before_next_verif,
       });
     }
 
