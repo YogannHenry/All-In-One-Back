@@ -36,6 +36,8 @@ const maintenanceController = {
       const lastDateVerif = new Date(last_date_verif);
       const currentDate = new Date();
       const months_since_last_verif = Math.floor((currentDate - lastDateVerif) / (30 * 24 * 60 * 60 * 1000));
+      // eslint-disable-next-line no-console
+      console.log('months_since_last_verif', months_since_last_verif);
 
       // Calcul du nombre total de kilomètres attendus depuis la dernière vérification
       const expected_km_since_last_verif = months_since_last_verif * km_per_month;
@@ -44,11 +46,12 @@ const maintenanceController = {
       const lastKmRemaining = validity_km - (km_since_last_verif + expected_km_since_last_verif);
 
       // Calcul des jours restants avant le prochain entretien
-      const daysPerMonth = 30; // Vous pouvez ajuster cela en fonction des mois
+      const daysPerMonth = 30;
       const lastTimeRemaining = Math.ceil((validity_km - km_since_last_verif) / (km_per_month * daysPerMonth));
 
       // Ajout des résultats au tableau allMaintenanceCalcul
       allMaintenanceCalcul.push({
+        ...oneMaintenance,
         last_date_verif,
         last_km_verif,
         validity_km,
