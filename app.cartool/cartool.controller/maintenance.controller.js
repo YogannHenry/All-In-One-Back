@@ -46,6 +46,7 @@ const maintenanceController = {
 
       // Calcul des kilomètres restants avant le prochain entretien
       const lastKmRemaining = validity_km - (km_since_last_verif + expected_km_since_last_verif);
+      const completionPercentageKm = Math.floor(((validity_km - lastKmRemaining) * 100) / validity_km);
 
       const number_of_days_before_next_verif = Math.ceil(lastKmRemaining / km_per_day_driven);
       // Calcul des jours restants avant le prochain entretien
@@ -62,6 +63,7 @@ const maintenanceController = {
         lastKmRemaining,
         formattedDateNextMaintenance,
         number_of_days_before_next_verif,
+        completionPercentageKm,
       });
     }
 
