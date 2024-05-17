@@ -1,24 +1,23 @@
 BEGIN;
 
-DROP TABLE IF EXISTS "bookmark_sub_categorys", "bookmark", "sub_category", "category", "user";
+DROP TABLE IF EXISTS "bookmark_tags", "bookmark_categories", "bookmark", "categories", "tags", ;
 
 
-CREATE TABLE "category" (
+CREATE TABLE "categories" (
   "id" SERIAL PRIMARY KEY,
   "name" VARCHAR(255) NOT NULL,
   "color" VARCHAR(50),
   "image" VARCHAR(255),
-  "user_id" INT NOT NULL REFERENCES "user"("id") ON DELETE CASCADE,
-  CONSTRAINT "fk_user_category" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE CASCADE
+   "userId" int NOT NULL REFERENCES "user"("id") ON DELETE CASCADE,
 );
 
-CREATE TABLE "sub_category" (
+
+CREATE TABLE "tags" (
   "id" SERIAL PRIMARY KEY,
   "name" VARCHAR(255) NOT NULL,
   "color" VARCHAR(50),
-  "image" VARCHAR(255),
-  "category_id" INT NOT NULL,
-  CONSTRAINT "fk_category_sub_category" FOREIGN KEY ("category_id") REFERENCES "category"("id") ON DELETE CASCADE
+   "userId" int NOT NULL REFERENCES "user"("id") ON DELETE CASCADE,
+
 );
 
 CREATE TABLE "bookmark" (
@@ -28,16 +27,18 @@ CREATE TABLE "bookmark" (
   "title" VARCHAR(255),
   "description" TEXT,
   "comment" TEXT,
-  "user_id" INT NOT NULL,
+   "userId" int NOT NULL REFERENCES "user"("id") ON DELETE CASCADE,
   CONSTRAINT "fk_user_bookmark" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE CASCADE
 );
 
-CREATE TABLE "bookmark_sub_categorys" (
-  "bookmark_id" INT NOT NULL,
-  "sub_category_id" INT NOT NULL DEFAULT -1,
-  CONSTRAINT "pk_bookmark_sub_categorys" PRIMARY KEY ("bookmark_id", "sub_category_id"),
-  CONSTRAINT "fk_bookmark_sub_categorys_bookmark" FOREIGN KEY ("bookmark_id") REFERENCES "bookmark"("id") ON DELETE CASCADE,
-  CONSTRAINT "fk_bookmark_sub_categorys_sub_category" FOREIGN KEY ("sub_category_id") REFERENCES "sub_category"("id") ON DELETE CASCADE
-);
+CREATE TABLE "bookmarks_categories" (
+"bookmark_id" int NOT NULL REFERENCES "bookmark"("id") ON DELETE CASCADE,
+"categories_id" int NOT NULL REFERENCES "categories"("id") ON DELETE CASCADE,
+)
+
+CREATE TABLE "bookmark_tags" (
+"bookmark_id" int NOT NULL REFERENCES "bookmark"("id") ON DELETE CASCADE,
+"tags_id" int NOT NULL REFERENCES "tags"("id") ON DELETE CASCADE,
+)
 
 COMMIT;
