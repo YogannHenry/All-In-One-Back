@@ -10,7 +10,7 @@ const userController = {
     } = req.body;
     const exists = await userDatamapper.getUserByEmail(email);
     if (exists) {
-      return res.json('message: cet email existe déjà');
+      return res.status(400).json({ message: 'Cet email existe déjà' });
     }
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(password, salt);

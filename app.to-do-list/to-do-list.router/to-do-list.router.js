@@ -14,7 +14,7 @@ const router = express.Router();
 
 // Routes recuperation liste
 
-router.get('/api/list', JWTverification, wrapperController(listController.getAllList));
+router.get('/api/list', wrapperController(listController.getAllList));
 router.get('/api/list/:listId', JWTverification, wrapperController(listController.getOneList));
 router.post('/api/list', JWTverification, schemaValidator(listSchema.createListSchema), wrapperController(listController.createOneList));
 router.put('/api/list/:listId', JWTverification, schemaValidator(listSchema.modifyListSchema), wrapperController(listController.modifyOneList));
