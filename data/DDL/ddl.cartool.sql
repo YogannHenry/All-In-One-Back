@@ -14,6 +14,14 @@ CREATE TABLE "car" (
   "updated_at" timestamptz
   );
 
+--   DROP TABLE IF EXISTS "car_user";
+
+-- CREATE TABLE "car_user" (
+--   "carId" int NOT NULL REFERENCES "car"("id") ON DELETE CASCADE,
+--   "userId" int NOT NULL REFERENCES "user"("id") ON DELETE CASCADE,
+--   PRIMARY KEY ("carId", "userId")
+-- );
+
 
 CREATE TABLE "maintenance" (
   "id" int GENERATED ALWAYS AS IDENTITY PRIMARY KEY,

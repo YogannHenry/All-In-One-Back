@@ -7,7 +7,7 @@ const transporter = nodemailer.createTransport({
   secure: true,
   auth: {
     user: 'contact@heyo5082.odns.fr',
-    pass: 'Allinone82*!*',
+    pass: process.env.DB_PASSWORD_MAIL_HOST,
   },
 });
 
